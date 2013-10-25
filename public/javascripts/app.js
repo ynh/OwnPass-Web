@@ -169,6 +169,54 @@ module.exports = HomeController = (function(_super) {
 })(Controller);
 });
 
+;require.register("controllers/login-controller", function(exports, require, module) {
+var Controller, LoginView, LoginsController, _ref,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+Controller = require('controllers/base/controller');
+
+LoginView = require('views/login-view');
+
+module.exports = LoginsController = (function(_super) {
+  __extends(LoginsController, _super);
+
+  function LoginsController() {
+    _ref = LoginsController.__super__.constructor.apply(this, arguments);
+    return _ref;
+  }
+
+  LoginsController.prototype.index = function() {
+    return this.view = new LoginView({
+      region: 'main'
+    });
+  };
+
+  return LoginsController;
+
+})(Controller);
+});
+
+;require.register("controllers/user-controller", function(exports, require, module) {
+var Controller, UsersController, _ref,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+Controller = require('controllers/base/controller');
+
+module.exports = UsersController = (function(_super) {
+  __extends(UsersController, _super);
+
+  function UsersController() {
+    _ref = UsersController.__super__.constructor.apply(this, arguments);
+    return _ref;
+  }
+
+  return UsersController;
+
+})(Controller);
+});
+
 ;require.register("initialize", function(exports, require, module) {
 var Application, routes;
 
@@ -274,9 +322,49 @@ module.exports = Model = (function(_super) {
 })(Chaplin.Model);
 });
 
+;require.register("models/password", function(exports, require, module) {
+var Model, Password, _ref,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+Model = require('/models/base/model');
+
+module.exports = Password = (function(_super) {
+  __extends(Password, _super);
+
+  function Password() {
+    _ref = Password.__super__.constructor.apply(this, arguments);
+    return _ref;
+  }
+
+  return Password;
+
+})(Model);
+});
+
+;require.register("models/user", function(exports, require, module) {
+var Model, User, _ref,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+Model = require('/models/base/model');
+
+module.exports = User = (function(_super) {
+  __extends(User, _super);
+
+  function User() {
+    _ref = User.__super__.constructor.apply(this, arguments);
+    return _ref;
+  }
+
+  return User;
+
+})(Model);
+});
+
 ;require.register("routes", function(exports, require, module) {
 module.exports = function(match) {
-  return match('', 'home#index');
+  return match('', 'login#index');
 };
 });
 
@@ -422,6 +510,32 @@ if (typeof define === 'function' && define.amd) {
 }
 });
 
+;require.register("views/login-view", function(exports, require, module) {
+var LoginView, View, _ref,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+View = require('views/base/view');
+
+module.exports = LoginView = (function(_super) {
+  __extends(LoginView, _super);
+
+  function LoginView() {
+    _ref = LoginView.__super__.constructor.apply(this, arguments);
+    return _ref;
+  }
+
+  LoginView.prototype.autoRender = true;
+
+  LoginView.prototype.className = 'home-page';
+
+  LoginView.prototype.template = require('./templates/login');
+
+  return LoginView;
+
+})(View);
+});
+
 ;require.register("views/site-view", function(exports, require, module) {
 var SiteView, View, _ref,
   __hasProp = {}.hasOwnProperty,
@@ -451,6 +565,26 @@ module.exports = SiteView = (function(_super) {
   return SiteView;
 
 })(View);
+});
+
+;require.register("views/templates/login", function(exports, require, module) {
+var __templateData = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
+  
+
+
+  return " <form class=\"form-signin\">\n 	<div class=\"logocontainer\">\n 	<i class=\"fa logo fa-key\"></i>\n </div>\n        <h2 class=\"form-signin-heading\">Please sign in</h2>\n        <input type=\"text\" class=\"form-control\" placeholder=\"Email address\" autofocus>\n        <input type=\"password\" class=\"form-control\" placeholder=\"Password\">\n        <label class=\"checkbox\">\n          <input type=\"checkbox\" value=\"remember-me\"> Remember me\n        </label>\n        <button class=\"btn btn-lg btn-primary btn-block signin\" type=\"submit\">Sign in</button>\n      </form>";
+  });
+if (typeof define === 'function' && define.amd) {
+  define([], function() {
+    return __templateData;
+  });
+} else if (typeof module === 'object' && module && module.exports) {
+  module.exports = __templateData;
+} else {
+  __templateData;
+}
 });
 
 ;require.register("views/templates/site", function(exports, require, module) {
