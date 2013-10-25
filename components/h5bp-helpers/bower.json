@@ -1,0 +1,21 @@
+{
+  "name": "h5bp-helpers",
+  "version": "0.1.0",
+  "main": "helpers.css",
+  "description": "Helpers (for printing etc) from html5boilerplate",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "gitHead": "dcf6dd9ad052d4488f237e9a4361190ef668bed8",
+  "readme": "h5bp-helpers\n============\n\nHelpers (for printing etc) from html5boilerpalte\n",
+  "readmeFilename": "README.md",
+  "_id": "h5bp-helpers@0.1.0",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/paulmillr/h5bp-helpers.git"
+  }
+}
