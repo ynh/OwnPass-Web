@@ -345,7 +345,7 @@ module.exports = HeaderView = (function(_super) {
 
   HeaderView.prototype.autoRender = true;
 
-  HeaderView.prototype.className = 'header';
+  HeaderView.prototype.className = 'navbar navbar-default';
 
   HeaderView.prototype.tagName = 'header';
 
@@ -389,7 +389,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   
 
 
-  return "<ul>\n  <li>\n    Docs:\n    <a class=\"header-link\" href=\"https://github.com/brunch/brunch/tree/stable/docs\">Brunch</a> /\n    <a class=\"header-link\" href=\"http://docs.chaplinjs.org\">Chaplin</a>\n  </li>\n  <li>\n    GitHub issues:\n    <a class=\"header-link\" href=\"https://github.com/brunch/brunch/issues\">Brunch</a> /\n    <a class=\"header-link\" href=\"https://github.com/chaplinjs/chaplin/issues\">Chaplin</a>\n  </li>\n  <li><a class=\"header-link\" href=\"https://github.com/paulmillr/ostio\">Ost.io example app</a></li>\n</ul>\n";
+  return "\n        <div class=\"navbar-header\">\n          <button type=\"button\" class=\"navbar-toggle\" data-toggle=\"collapse\" data-target=\".navbar-collapse\">\n            <span class=\"icon-bar\"></span>\n            <span class=\"icon-bar\"></span>\n            <span class=\"icon-bar\"></span>\n          </button>\n          <a class=\"navbar-brand\" href=\"#\">OwnPass</a>\n        </div>\n        <div class=\"navbar-collapse collapse\">\n          <ul class=\"nav navbar-nav\">\n            <li class=\"active\"><a href=\"#\">Passwords</a></li>\n            <li><a href=\"#\">Users</a></li> \n          </ul>\n          <ul class=\"nav navbar-nav navbar-right\">\n            <li><a href=\"https://github.com/KarlKode/OwnPass-Web\"><i class=\"fa fa-github\"></i> Github</a></li> \n          </ul>\n        </div><!--/.nav-collapse -->\n\n";
   });
 if (typeof define === 'function' && define.amd) {
   define([], function() {
@@ -409,7 +409,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   
 
 
-  return "<a href=\"http://brunch.io/\">\n  <img src=\"http://brunch.io/images/brunch.png\" alt=\"Brunch\" />\n</a>\n";
+  return " <div class=\"jumbotron\">\n        <h1>Navbar example</h1>\n        <p>This example is a quick exercise to illustrate how the default, static navbar and fixed to top navbar work. It includes the responsive CSS and HTML, so it also adapts to your viewport and device.</p>\n        <p>\n          <a class=\"btn btn-lg btn-primary\" href=\"../../components/#navbar\">View navbar docs &raquo;</a>\n        </p>\n      </div>\n";
   });
 if (typeof define === 'function' && define.amd) {
   define([], function() {
@@ -460,7 +460,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   
 
 
-  return "<div class=\"header-container\" id=\"header-container\"></div>\n\n<div class=\"outer-page-container\">\n  <div class=\"page-container\" id=\"page-container\">\n  </div>\n</div>\n";
+  return " <div class=\"container\">\n<div class=\"header-container\" id=\"header-container\"></div>\n\n<div class=\"outer-page-container\">\n  <div class=\"page-container\" id=\"page-container\">\n  </div>\n</div>\n</div>\n";
   });
 if (typeof define === 'function' && define.amd) {
   define([], function() {

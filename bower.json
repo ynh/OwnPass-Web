@@ -7,8 +7,9 @@
     "console-polyfill": "~0.1.0",
     "lodash": "~2.0.0",
     "jquery": "~2.0.2",
-    "normalize-css": "~2.1.2",
-    "h5bp-helpers": "~0.1.0"
+    "h5bp-helpers": "~0.1.0",
+    "bootstrap": "~3.0.0",
+    "font-awesome": "~4.0.0"
   },
   "overrides": {
     "backbone": {
@@ -17,6 +18,11 @@
         "jquery": "*"
       },
       "main": "backbone.js"
-    }
+    },
+      "font-awesome":{
+         "main": [
+            "./css/font-awesome.css"
+        ]
+      }
   }
 }
