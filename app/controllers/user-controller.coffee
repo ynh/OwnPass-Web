@@ -1,3 +1,3 @@
-Controller = require 'controllers/base/controller'
+AppController = require 'controllers/base/appcontroller'
 
-module.exports = class UsersController extends Controller
+module.exports = class UsersController extends AppController

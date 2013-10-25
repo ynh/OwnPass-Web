@@ -108,6 +108,35 @@ module.exports = Application = (function(_super) {
 })(Chaplin.Application);
 });
 
+;require.register("controllers/base/appcontroller", function(exports, require, module) {
+var Controller, HeaderView, HomeController, _ref,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+Controller = require('controllers/base/controller');
+
+HeaderView = require('views/home/header-view');
+
+module.exports = HomeController = (function(_super) {
+  __extends(HomeController, _super);
+
+  function HomeController() {
+    _ref = HomeController.__super__.constructor.apply(this, arguments);
+    return _ref;
+  }
+
+  HomeController.prototype.beforeAction = function() {
+    HomeController.__super__.beforeAction.apply(this, arguments);
+    return this.compose('header', HeaderView, {
+      region: 'header'
+    });
+  };
+
+  return HomeController;
+
+})(Controller);
+});
+
 ;require.register("controllers/base/controller", function(exports, require, module) {
 var Controller, SiteView, _ref,
   __hasProp = {}.hasOwnProperty,
@@ -133,11 +162,11 @@ module.exports = Controller = (function(_super) {
 });
 
 ;require.register("controllers/home-controller", function(exports, require, module) {
-var Controller, HeaderView, HomeController, HomePageView, _ref,
+var AppController, HeaderView, HomeController, HomePageView, _ref,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-Controller = require('controllers/base/controller');
+AppController = require('controllers/base/appcontroller');
 
 HeaderView = require('views/home/header-view');
 
@@ -151,13 +180,6 @@ module.exports = HomeController = (function(_super) {
     return _ref;
   }
 
-  HomeController.prototype.beforeAction = function() {
-    HomeController.__super__.beforeAction.apply(this, arguments);
-    return this.compose('header', HeaderView, {
-      region: 'header'
-    });
-  };
-
   HomeController.prototype.index = function() {
     return this.view = new HomePageView({
       region: 'main'
@@ -166,7 +188,7 @@ module.exports = HomeController = (function(_super) {
 
   return HomeController;
 
-})(Controller);
+})(AppController);
 });
 
 ;require.register("controllers/login-controller", function(exports, require, module) {
@@ -197,12 +219,64 @@ module.exports = LoginsController = (function(_super) {
 })(Controller);
 });
 
-;require.register("controllers/user-controller", function(exports, require, module) {
-var Controller, UsersController, _ref,
+;require.register("controllers/password-controller", function(exports, require, module) {
+var AppController, Collection, Password, PasswordView, PasswordsController, PasswordsView, _ref,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-Controller = require('controllers/base/controller');
+AppController = require('controllers/base/appcontroller');
+
+PasswordsView = require('views/passwords-view');
+
+PasswordView = require('views/password-view');
+
+Collection = require('models/base/collection');
+
+Password = require('models/password');
+
+module.exports = PasswordsController = (function(_super) {
+  __extends(PasswordsController, _super);
+
+  function PasswordsController() {
+    _ref = PasswordsController.__super__.constructor.apply(this, arguments);
+    return _ref;
+  }
+
+  PasswordsController.prototype.index = function() {
+    this.passwords = new Collection([
+      {
+        'name': 'test'
+      }, {
+        'name': 'test'
+      }, {
+        'name': 'test'
+      }
+    ], {
+      model: Password
+    });
+    return this.view = new PasswordsView({
+      collection: this.passwords,
+      region: 'main'
+    });
+  };
+
+  PasswordsController.prototype.edit = function(id) {
+    return this.view = new PasswordView({
+      region: 'main'
+    });
+  };
+
+  return PasswordsController;
+
+})(AppController);
+});
+
+;require.register("controllers/user-controller", function(exports, require, module) {
+var AppController, UsersController, _ref,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+AppController = require('controllers/base/appcontroller');
 
 module.exports = UsersController = (function(_super) {
   __extends(UsersController, _super);
@@ -214,7 +288,7 @@ module.exports = UsersController = (function(_super) {
 
   return UsersController;
 
-})(Controller);
+})(AppController);
 });
 
 ;require.register("initialize", function(exports, require, module) {
@@ -364,7 +438,9 @@ module.exports = User = (function(_super) {
 
 ;require.register("routes", function(exports, require, module) {
 module.exports = function(match) {
-  return match('', 'login#index');
+  match('', 'login#index');
+  match('passwords', 'password#index');
+  return match('passwords/:id', 'password#edit');
 };
 });
 
@@ -531,9 +607,73 @@ module.exports = LoginView = (function(_super) {
 
   LoginView.prototype.template = require('./templates/login');
 
+  LoginView.prototype.initialize = function(options) {
+    LoginView.__super__.initialize.apply(this, arguments);
+    return this.delegate('click', '.login', this.login);
+  };
+
+  LoginView.prototype.login = function(e) {
+    e.preventDefault();
+    return $(e.target).button("loading");
+  };
+
   return LoginView;
 
 })(View);
+});
+
+;require.register("views/password-view", function(exports, require, module) {
+var PasswordView, View, _ref,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+View = require('views/base/view');
+
+module.exports = PasswordView = (function(_super) {
+  __extends(PasswordView, _super);
+
+  function PasswordView() {
+    _ref = PasswordView.__super__.constructor.apply(this, arguments);
+    return _ref;
+  }
+
+  PasswordView.prototype.container = 'body';
+
+  PasswordView.prototype.autoRender = true;
+
+  PasswordView.prototype.template = require('./templates/password');
+
+  return PasswordView;
+
+})(View);
+});
+
+;require.register("views/passwords-view", function(exports, require, module) {
+var CollectionView, Password, PasswordsView, _ref,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+CollectionView = require('views/base/collection-view');
+
+Password = require('views/password-view');
+
+module.exports = PasswordsView = (function(_super) {
+  __extends(PasswordsView, _super);
+
+  function PasswordsView() {
+    _ref = PasswordsView.__super__.constructor.apply(this, arguments);
+    return _ref;
+  }
+
+  PasswordsView.prototype.container = 'body';
+
+  PasswordsView.prototype.autoRender = true;
+
+  PasswordsView.prototype.itemView = Password;
+
+  return PasswordsView;
+
+})(CollectionView);
 });
 
 ;require.register("views/site-view", function(exports, require, module) {
@@ -574,7 +714,47 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   
 
 
-  return " <form class=\"form-signin\">\n 	<div class=\"logocontainer\">\n 	<i class=\"fa logo fa-key\"></i>\n </div>\n        <h2 class=\"form-signin-heading\">Please sign in</h2>\n        <input type=\"text\" class=\"form-control\" placeholder=\"Email address\" autofocus>\n        <input type=\"password\" class=\"form-control\" placeholder=\"Password\">\n        <label class=\"checkbox\">\n          <input type=\"checkbox\" value=\"remember-me\"> Remember me\n        </label>\n        <button class=\"btn btn-lg btn-primary btn-block signin\" type=\"submit\">Sign in</button>\n      </form>";
+  return " <form class=\"form-signin\">\n 	<div class=\"logocontainer\">\n 	<i class=\"fa logo fa-key\"></i>\n </div>\n        <h2 class=\"form-signin-heading\">Please sign in</h2>\n        <input type=\"text\" class=\"form-control\" placeholder=\"Email address\" autofocus>\n        <input type=\"password\" class=\"form-control\" placeholder=\"Password\">\n        <label class=\"checkbox\">\n          <input type=\"checkbox\" value=\"remember-me\"> Remember me\n        </label>\n        <button class=\"btn btn-lg btn-primary btn-block login\" type=\"submit\">Sign in</button>\n      </form>";
+  });
+if (typeof define === 'function' && define.amd) {
+  define([], function() {
+    return __templateData;
+  });
+} else if (typeof module === 'object' && module && module.exports) {
+  module.exports = __templateData;
+} else {
+  __templateData;
+}
+});
+
+;require.register("views/templates/password", function(exports, require, module) {
+var __templateData = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
+  
+
+
+  return "<h2>PW</h2>";
+  });
+if (typeof define === 'function' && define.amd) {
+  define([], function() {
+    return __templateData;
+  });
+} else if (typeof module === 'object' && module && module.exports) {
+  module.exports = __templateData;
+} else {
+  __templateData;
+}
+});
+
+;require.register("views/templates/passwords", function(exports, require, module) {
+var __templateData = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
+  
+
+
+  return "<h4>Passwords</h4>";
   });
 if (typeof define === 'function' && define.amd) {
   define([], function() {
