@@ -7,7 +7,7 @@ Password = require 'models/password'
 module.exports = class PasswordsController extends AppController
 
   index: ->
-    @passwords = new Collection [{'name':'test'},{'name':'test'},{'name':'test'}], model: Password  
+    @passwords = new Collection [{'site':'http://www.reddit.com/r/programming/','domain':'www.reddit.com'},{'site':'http://www.google.com','domain':'www.google.com'},{'site':'http://www.twitter.com/','domain':'www.twitter.com'}], model: Password  
     @view = new PasswordsView collection: @passwords, region: 'main'
     # @passwords.fetch().then @view.render
 

@@ -245,11 +245,14 @@ module.exports = PasswordsController = (function(_super) {
   PasswordsController.prototype.index = function() {
     this.passwords = new Collection([
       {
-        'name': 'test'
+        'site': 'http://www.reddit.com/r/programming/',
+        'domain': 'www.reddit.com'
       }, {
-        'name': 'test'
+        'site': 'http://www.google.com',
+        'domain': 'www.google.com'
       }, {
-        'name': 'test'
+        'site': 'http://www.twitter.com/',
+        'domain': 'www.twitter.com'
       }
     ], {
       model: Password
@@ -622,17 +625,54 @@ module.exports = LoginView = (function(_super) {
 })(View);
 });
 
-;require.register("views/password-view", function(exports, require, module) {
-var PasswordView, View, _ref,
+;require.register("views/password-edit-view", function(exports, require, module) {
+var PasswordEditView, View, _ref,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 View = require('views/base/view');
 
+module.exports = PasswordEditView = (function(_super) {
+  __extends(PasswordEditView, _super);
+
+  function PasswordEditView() {
+    _ref = PasswordEditView.__super__.constructor.apply(this, arguments);
+    return _ref;
+  }
+
+  PasswordEditView.prototype.template = require('./templates/password-edit');
+
+  PasswordEditView.prototype.autoRender = true;
+
+  PasswordEditView.prototype.events = {
+    'click .cancel': 'cancel'
+  };
+
+  PasswordEditView.prototype.cancel = function() {
+    this.trigger('dispose');
+    return this.dispose();
+  };
+
+  return PasswordEditView;
+
+})(View);
+});
+
+;require.register("views/password-view", function(exports, require, module) {
+var EditPasswordView, PasswordView, View, _ref,
+  __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+View = require('views/base/view');
+
+EditPasswordView = require('views/password-edit-view');
+
 module.exports = PasswordView = (function(_super) {
   __extends(PasswordView, _super);
 
   function PasswordView() {
+    this.editPassword = __bind(this.editPassword, this);
     _ref = PasswordView.__super__.constructor.apply(this, arguments);
     return _ref;
   }
@@ -642,6 +682,33 @@ module.exports = PasswordView = (function(_super) {
   PasswordView.prototype.autoRender = true;
 
   PasswordView.prototype.template = require('./templates/password');
+
+  PasswordView.prototype.events = {
+    'click .edit': 'editPassword'
+  };
+
+  PasswordView.prototype.initialize = function() {
+    PasswordView.__super__.initialize.apply(this, arguments);
+    return console.log(this.model.toJSON());
+  };
+
+  PasswordView.prototype.editPassword = function(event) {
+    var createNewPassword,
+      _this = this;
+    createNewPassword = function() {
+      var container, editPassword;
+      container = $('<div>');
+      _this.$el.html("");
+      _this.$el.append(container);
+      editPassword = new EditPasswordView({
+        model: _this.model,
+        container: container
+      });
+      editPassword.on('dispose', _this.render);
+      return _this.subview('editPasswordForm', editPassword);
+    };
+    return createNewPassword();
+  };
 
   return PasswordView;
 
@@ -727,14 +794,52 @@ if (typeof define === 'function' && define.amd) {
 }
 });
 
+;require.register("views/templates/password-edit", function(exports, require, module) {
+var __templateData = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
+  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
+
+
+  buffer += "<a class=\"btn btn-default pull-right cancel\"><i class=\"fa fa-undo\"></i> Cancel</a>\n<h2><img src=\"http://g.etfv.co/";
+  if (stack1 = helpers.site) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.site; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
+    + "\" /> ";
+  if (stack1 = helpers.domain) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.domain; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
+    + "</h2><form class=\"form-inline\" role=\"form\">\n  <div class=\"form-group\">\n    <label class=\"sr-only\" for=\"exampleInputEmail2\">Email address</label>\n    <input type=\"email\" class=\"form-control\" id=\"exampleInputEmail2\" placeholder=\"Enter email\">\n  </div>\n  <div class=\"form-group\">\n    <label class=\"sr-only\" for=\"exampleInputPassword2\">Password</label>\n    <input type=\"password\" class=\"form-control\" id=\"exampleInputPassword2\" placeholder=\"Password\">\n  </div> \n  <button type=\"submit\" class=\"btn btn-default\"> <i class=\"fa fa-save\"></i> Store</button>\n</form>";
+  return buffer;
+  });
+if (typeof define === 'function' && define.amd) {
+  define([], function() {
+    return __templateData;
+  });
+} else if (typeof module === 'object' && module && module.exports) {
+  module.exports = __templateData;
+} else {
+  __templateData;
+}
+});
+
 ;require.register("views/templates/password", function(exports, require, module) {
 var __templateData = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  
+  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  return "<h2>PW</h2>";
+  buffer += "<a class=\"btn btn-default pull-right edit\"><i class=\"fa fa-pencil\"></i> Edit </a>\n<h2><img src=\"http://g.etfv.co/";
+  if (stack1 = helpers.site) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.site; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
+    + "\" /> ";
+  if (stack1 = helpers.domain) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.domain; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
+    + "</h2>";
+  return buffer;
   });
 if (typeof define === 'function' && define.amd) {
   define([], function() {
