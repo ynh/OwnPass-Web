@@ -8,7 +8,7 @@ module.exports = class PasswordsController extends AppController
 
   index: ->
     @passwords = new Collection null, model: Password  
-    @passwords.url = "https://ownpass.marcg.ch/passwords"
+    @passwords.url = "#{window.api}passwords"
     @view = new PasswordsView collection: @passwords, region: 'main'
     @view.render()
     @passwords.fetch()

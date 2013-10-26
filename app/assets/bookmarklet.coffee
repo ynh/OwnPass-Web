@@ -205,15 +205,24 @@ text-decoration: none;
                 beforeSend: (xhr)->
                   xhr.setRequestHeader("Authorization", "Basic " + btoa(window.email + ":" + utils.hash_password(window.email,pw)))
                 }).done (response) =>
+                  counter = 0
+                  b = window.location.hostname
                   for resp in response
                     a = $('<a>',{href: resp.site})[0].hostname
-                    b = window.location.hostname
                     if a.indexOf(b) != -1 or b.indexOf(a) != -1
-                      el.append("""<div class="mbtn"><h2><img src="http://g.etfv.co/#{resp.site}" /> #{a} - #{utils.decrypt(resp.username)} </h2></div>""")
+                      counter++;
+                      item= $("""<div class="mbtn"><h2><img src="http://g.etfv.co/#{resp.site}" /> #{a} - #{utils.decrypt(resp.username)} </h2></div>""")
+                      item.click do(resp)->(e)->
+                          e.preventDefault()
+                          $("input[type=text],input[type=email]").val(utils.decrypt(resp.username))
+                          $("input[type=password]").val(utils.decrypt(resp.password))
+                          $("form:contains(login),form:contains(sign)").submit()
+                      el.append(item)
+                  if counter == 0
+                    el.append("""<h2>Now passwords found for #{b}</h2>""")
                 .error (xhr) =>
                   try
                     json = $.parseJSON(xhr.responseText);
-                    alert(json.message);
                     el.find('.pw').val("")
                     el.find('.pw').show()
                   catch e

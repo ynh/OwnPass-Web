@@ -21,8 +21,6 @@ module.exports = class LoginView extends View
     	}).done (response) =>
         window.user = userdata
         Chaplin.helpers.redirectTo 'password#index', {}
-      .error (response) =>
-        alert "Error"
       .always (response) =>
         $(e.target).button "reset"
 

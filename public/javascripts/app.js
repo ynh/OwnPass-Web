@@ -192,7 +192,7 @@ module.exports = HomeController = (function(_super) {
 });
 
 ;require.register("controllers/login-controller", function(exports, require, module) {
-var Controller, LoginView, LoginsController, RegisterView, _ref,
+var AuthorizeView, Controller, LoginView, LoginsController, RegisterView, _ref,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
@@ -201,6 +201,8 @@ Controller = require('controllers/base/controller');
 LoginView = require('views/login-view');
 
 RegisterView = require('views/register-view');
+
+AuthorizeView = require('views/authorize-view');
 
 module.exports = LoginsController = (function(_super) {
   __extends(LoginsController, _super);
@@ -218,6 +220,14 @@ module.exports = LoginsController = (function(_super) {
 
   LoginsController.prototype.register = function() {
     return this.view = new RegisterView({
+      region: 'main'
+    });
+  };
+
+  LoginsController.prototype.authorize = function(opts) {
+    return this.view = new AuthorizeView({
+      devid: opts.devid,
+      devhash: opts.devhash,
       region: 'main'
     });
   };
@@ -254,7 +264,7 @@ module.exports = PasswordsController = (function(_super) {
     this.passwords = new Collection(null, {
       model: Password
     });
-    this.passwords.url = "https://ownpass.marcg.ch/passwords";
+    this.passwords.url = "" + window.api + "passwords";
     this.view = new PasswordsView({
       collection: this.passwords,
       region: 'main'
@@ -317,16 +327,43 @@ $(function() {
       }
     },
     statusCode: {
-      401: function() {
+      401: function(xhr) {
+        var json;
+        json = $.parseJSON(xhr.responseText);
+        if ((json.id != null) && (json.device != null)) {
+          Chaplin.helpers.redirectTo('login#authorize', {
+            devid: json.id,
+            devhash: json.device
+          });
+          return;
+        }
+        alertify.error(json.message);
         return Chaplin.helpers.redirectTo('login#index', {});
       },
-      401: function() {
+      403: function(xhr) {
+        alertify.error("Invalid resource");
+        return Chaplin.helpers.redirectTo('login#index', {});
+      },
+      404: function(xhr) {
+        var json;
+        json = $.parseJSON(xhr.responseText);
+        return alertify.error(json.message);
+      },
+      406: function(xhr) {
+        return alertify.error("Please fill out the form");
+      },
+      409: function(xhr) {
+        return alertify.error("User name taken");
+      },
+      500: function(xhr) {
+        alertify.error("OOPPSSS! Some thing unexpected happened!");
         return Chaplin.helpers.redirectTo('login#index', {});
       }
     }
   });
   return new Application({
-    title: 'Brunch example application',
+    title: 'OwnPass',
+    pushState: false,
     controllerSuffix: '-controller',
     routes: routes
   });
@@ -558,7 +595,7 @@ module.exports = User = (function(_super) {
     return _ref;
   }
 
-  User.prototype.urlRoot = "https://ownpass.marcg.ch/users";
+  User.prototype.urlRoot = "" + window.api + "users";
 
   return User;
 
@@ -569,9 +606,63 @@ module.exports = User = (function(_super) {
 module.exports = function(match) {
   match('', 'login#index');
   match('register', 'login#register');
+  match('authorize/:devid/:devhash', 'login#authorize');
   match('passwords', 'password#index');
   return match('passwords/:id', 'password#edit');
 };
+});
+
+;require.register("views/authorize-view", function(exports, require, module) {
+var AuthorizeView, View, _ref,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+View = require('views/base/view');
+
+module.exports = AuthorizeView = (function(_super) {
+  __extends(AuthorizeView, _super);
+
+  function AuthorizeView() {
+    _ref = AuthorizeView.__super__.constructor.apply(this, arguments);
+    return _ref;
+  }
+
+  AuthorizeView.prototype.autoRender = true;
+
+  AuthorizeView.prototype.className = 'home-page';
+
+  AuthorizeView.prototype.template = require('./templates/authorize');
+
+  AuthorizeView.prototype.initialize = function(options) {
+    AuthorizeView.__super__.initialize.apply(this, arguments);
+    this.devid = options.devid;
+    this.devhash = options.devhash;
+    return this.delegate('click', '.authorize', this.authorize);
+  };
+
+  AuthorizeView.prototype.authorize = function(e) {
+    var _this = this;
+    e.preventDefault();
+    $(e.target).button("loading");
+    return $.ajax({
+      method: 'PUT',
+      data: JSON.stringify({
+        device: this.devhash,
+        active: true,
+        code: this.$el.find('.auth').val()
+      }),
+      contentType: "application/json; charset=utf-8",
+      url: "https://ownpass.marcg.ch/devices/" + this.devid
+    }).done(function(response) {
+      return Chaplin.helpers.redirectTo('login#index', {});
+    }).always(function(response) {
+      return $(e.target).button("reset");
+    });
+  };
+
+  return AuthorizeView;
+
+})(View);
 });
 
 ;require.register("views/base/collection-view", function(exports, require, module) {
@@ -710,7 +801,7 @@ function program3(depth0,data) {
   else { stack1 = depth0.withWindow; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   if (!helpers.withWindow) { stack1 = blockHelperMissing.call(depth0, stack1, options); }
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "';document.body.appendChild(e);void(0);\">Bookmarklet</a></li> \n            \n          </ul>\n          <ul class=\"nav navbar-nav navbar-right\">\n            <li><a href=\"https://github.com/KarlKode/OwnPass-Web\"><i class=\"fa fa-github\"></i> Github</a></li> \n          </ul>\n        </div><!--/.nav-collapse -->\n\n";
+  buffer += "';document.body.appendChild(e);void(0);\">Bookmarklet</a></li> \n            \n          </ul>\n          <ul class=\"nav navbar-nav navbar-right\">\n            <li><a href=\"https://github.com/KarlKode/OwnPass-Server\"><i class=\"fa fa-github\"></i> Github Server</a></li> \n            <li><a href=\"https://github.com/KarlKode/OwnPass-Web\"><i class=\"fa fa-github\"></i> Github Client</a></li> \n          </ul>\n        </div><!--/.nav-collapse -->\n\n";
   return buffer;
   });
 if (typeof define === 'function' && define.amd) {
@@ -790,8 +881,6 @@ module.exports = LoginView = (function(_super) {
     }).done(function(response) {
       window.user = userdata;
       return Chaplin.helpers.redirectTo('password#index', {});
-    }).error(function(response) {
-      return alert("Error");
     }).always(function(response) {
       return $(e.target).button("reset");
     });
@@ -865,8 +954,6 @@ module.exports = PasswordEditView = (function(_super) {
       self.ok = true;
       self.model.fetch();
       return self.cancel();
-    }).error(function(response) {
-      return alert("Error");
     }).always(function(response) {
       return btn.button("reset");
     });
@@ -1065,7 +1152,7 @@ module.exports = RegisterView = (function(_super) {
       _this = this;
     e.preventDefault();
     if (this.$el.find('.password').val() !== this.$el.find('.repassword').val()) {
-      alert("Password do not match");
+      alertify.error("Password do not match");
       return;
     }
     $(e.target).button("loading");
@@ -1080,8 +1167,6 @@ module.exports = RegisterView = (function(_super) {
       userdata.plainpw = plainpw;
       window.user = userdata;
       return Chaplin.helpers.redirectTo('password#index', {});
-    }).error(function(response) {
-      return alert("Error");
     }).always(function(response) {
       return $(e.target).button("reset");
     });
@@ -1121,6 +1206,26 @@ module.exports = SiteView = (function(_super) {
   return SiteView;
 
 })(View);
+});
+
+;require.register("views/templates/authorize", function(exports, require, module) {
+var __templateData = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
+  
+
+
+  return " <form class=\"form-signin\">\n 	<div class=\"logocontainer\">\n 	<i class=\"fa logo fa-unlock\"></i>\n </div>\n        <h2 class=\"form-signin-heading\">Whitelist device</h2>\n        <input type=\"text\" class=\"form-control auth\" placeholder=\"Authorization code\" autofocus>\n         \n        <button class=\"btn btn-lg btn-primary btn-block authorize\" type=\"submit\">Authorize</button>\n        <p><a href=\"/\" class=\"btn btn-link\">Back to login</a></p>\n      </form>\n";
+  });
+if (typeof define === 'function' && define.amd) {
+  define([], function() {
+    return __templateData;
+  });
+} else if (typeof module === 'object' && module && module.exports) {
+  module.exports = __templateData;
+} else {
+  __templateData;
+}
 });
 
 ;require.register("views/templates/login", function(exports, require, module) {

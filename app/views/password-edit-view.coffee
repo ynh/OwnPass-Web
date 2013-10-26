@@ -31,8 +31,6 @@ module.exports = class PasswordEditView extends View
         self.ok = true
         self.model.fetch()
         self.cancel()
-      .error (response) =>
-        alert "Error"
       .always (response) =>
         btn.button "reset"
 

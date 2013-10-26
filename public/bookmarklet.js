@@ -159,26 +159,35 @@ if (!window.jQuery) {
             return xhr.setRequestHeader("Authorization", "Basic " + btoa(window.email + ":" + utils.hash_password(window.email, pw)));
           }
         }).done(function(response) {
-          var a, b, resp, _i, _len, _results;
-          _results = [];
+          var a, b, counter, item, resp, _i, _len;
+          counter = 0;
+          b = window.location.hostname;
           for (_i = 0, _len = response.length; _i < _len; _i++) {
             resp = response[_i];
             a = $('<a>', {
               href: resp.site
             })[0].hostname;
-            b = window.location.hostname;
             if (a.indexOf(b) !== -1 || b.indexOf(a) !== -1) {
-              _results.push(el.append("<div class=\"mbtn\"><h2><img src=\"http://g.etfv.co/" + resp.site + "\" /> " + a + " - " + (utils.decrypt(resp.username)) + " </h2></div>"));
-            } else {
-              _results.push(void 0);
+              counter++;
+              item = $("<div class=\"mbtn\"><h2><img src=\"http://g.etfv.co/" + resp.site + "\" /> " + a + " - " + (utils.decrypt(resp.username)) + " </h2></div>");
+              item.click((function(resp) {
+                return function(e) {
+                  e.preventDefault();
+                  $("input[type=text],input[type=email]").val(utils.decrypt(resp.username));
+                  $("input[type=password]").val(utils.decrypt(resp.password));
+                  return $("form:contains(login),form:contains(sign)").submit();
+                };
+              })(resp));
+              el.append(item);
             }
           }
-          return _results;
+          if (counter === 0) {
+            return el.append("<h2>Now passwords found for " + b + "</h2>");
+          }
         }).error(function(xhr) {
           var json;
           try {
             json = $.parseJSON(xhr.responseText);
-            alert(json.message);
             el.find('.pw').val("");
             return el.find('.pw').show();
           } catch (e) {

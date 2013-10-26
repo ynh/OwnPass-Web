@@ -14,7 +14,7 @@ module.exports = class RegisterView extends View
   login: (e)->
     e.preventDefault()
     if @$el.find('.password').val()!=@$el.find('.repassword').val()
-        alert "Password do not match"
+        alertify.error("Password do not match")
         return
     $(e.target).button "loading"
     plainpw = @$el.find('.password').val()
@@ -26,7 +26,5 @@ module.exports = class RegisterView extends View
         userdata.plainpw = plainpw
         window.user= userdata
         Chaplin.helpers.redirectTo 'password#index', {}
-      .error (response) =>
-        alert "Error"
       .always (response) =>
         $(e.target).button "reset"
