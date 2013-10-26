@@ -192,13 +192,15 @@ module.exports = HomeController = (function(_super) {
 });
 
 ;require.register("controllers/login-controller", function(exports, require, module) {
-var Controller, LoginView, LoginsController, _ref,
+var Controller, LoginView, LoginsController, RegisterView, _ref,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 Controller = require('controllers/base/controller');
 
 LoginView = require('views/login-view');
+
+RegisterView = require('views/register-view');
 
 module.exports = LoginsController = (function(_super) {
   __extends(LoginsController, _super);
@@ -210,6 +212,12 @@ module.exports = LoginsController = (function(_super) {
 
   LoginsController.prototype.index = function() {
     return this.view = new LoginView({
+      region: 'main'
+    });
+  };
+
+  LoginsController.prototype.register = function() {
+    return this.view = new RegisterView({
       region: 'main'
     });
   };
@@ -243,24 +251,15 @@ module.exports = PasswordsController = (function(_super) {
   }
 
   PasswordsController.prototype.index = function() {
-    this.passwords = new Collection([
-      {
-        'site': 'http://www.reddit.com/r/programming/',
-        'domain': 'www.reddit.com'
-      }, {
-        'site': 'http://www.google.com',
-        'domain': 'www.google.com'
-      }, {
-        'site': 'http://www.twitter.com/',
-        'domain': 'www.twitter.com'
-      }
-    ], {
+    this.passwords = new Collection(null, {
       model: Password
     });
-    return this.view = new PasswordsView({
+    this.passwords.url = "https://ownpass.marcg.ch/passwords";
+    this.view = new PasswordsView({
       collection: this.passwords,
       region: 'main'
     });
+    return this.passwords.fetch().then(this.view.render);
   };
 
   PasswordsController.prototype.edit = function(id) {
@@ -302,6 +301,13 @@ Application = require('application');
 routes = require('routes');
 
 $(function() {
+  $.ajaxSetup({
+    beforeSend: function(xhr) {
+      if (window.user != null) {
+        return xhr.setRequestHeader("Authorization", "Basic " + btoa(window.user.email + ":" + window.user.password));
+      }
+    }
+  });
   return new Application({
     title: 'Brunch example application',
     controllerSuffix: '-controller',
@@ -414,6 +420,8 @@ module.exports = Password = (function(_super) {
     return _ref;
   }
 
+  Password.prototype.urlRoot = "https://ownpass.marcg.ch/passwords";
+
   return Password;
 
 })(Model);
@@ -434,6 +442,8 @@ module.exports = User = (function(_super) {
     return _ref;
   }
 
+  User.prototype.urlRoot = "https://ownpass.marcg.ch/users";
+
   return User;
 
 })(Model);
@@ -442,6 +452,7 @@ module.exports = User = (function(_super) {
 ;require.register("routes", function(exports, require, module) {
 module.exports = function(match) {
   match('', 'login#index');
+  match('register', 'login#register');
   match('passwords', 'password#index');
   return match('passwords/:id', 'password#edit');
 };
@@ -616,8 +627,27 @@ module.exports = LoginView = (function(_super) {
   };
 
   LoginView.prototype.login = function(e) {
+    var userdata,
+      _this = this;
     e.preventDefault();
-    return $(e.target).button("loading");
+    $(e.target).button("loading");
+    userdata = {
+      email: this.$el.find('.email').val(),
+      password: this.$el.find('.password').val()
+    };
+    return $.ajax({
+      url: "https://ownpass.marcg.ch/users",
+      beforeSend: function(xhr) {
+        return xhr.setRequestHeader("Authorization", "Basic " + btoa(userdata.email + ":" + userdata.password));
+      }
+    }).done(function(response) {
+      window.user = userdata;
+      return Chaplin.helpers.redirectTo('password#index', {});
+    }).error(function(response) {
+      return alert("Error");
+    }).always(function(response) {
+      return $(e.target).button("reset");
+    });
   };
 
   return LoginView;
@@ -743,6 +773,64 @@ module.exports = PasswordsView = (function(_super) {
 })(CollectionView);
 });
 
+;require.register("views/register-view", function(exports, require, module) {
+var RegisterView, User, View, _ref,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+View = require('views/base/view');
+
+User = require('models/user');
+
+module.exports = RegisterView = (function(_super) {
+  __extends(RegisterView, _super);
+
+  function RegisterView() {
+    _ref = RegisterView.__super__.constructor.apply(this, arguments);
+    return _ref;
+  }
+
+  RegisterView.prototype.autoRender = true;
+
+  RegisterView.prototype.className = 'home-page';
+
+  RegisterView.prototype.template = require('./templates/register');
+
+  RegisterView.prototype.initialize = function(options) {
+    RegisterView.__super__.initialize.apply(this, arguments);
+    return this.delegate('click', '.register', this.login);
+  };
+
+  RegisterView.prototype.login = function(e) {
+    var self, user, userdata,
+      _this = this;
+    e.preventDefault();
+    if (this.$el.find('.password').val() !== this.$el.find('.repassword').val()) {
+      alert("Password do not match");
+      return;
+    }
+    $(e.target).button("loading");
+    userdata = {
+      email: this.$el.find('.email').val(),
+      password: this.$el.find('.password').val()
+    };
+    user = new User(userdata);
+    self = this;
+    return user.save().done(function(response) {
+      window.user = userdata;
+      return Chaplin.helpers.redirectTo('password#index', {});
+    }).error(function(response) {
+      return alert("Error");
+    }).always(function(response) {
+      return $(e.target).button("reset");
+    });
+  };
+
+  return RegisterView;
+
+})(View);
+});
+
 ;require.register("views/site-view", function(exports, require, module) {
 var SiteView, View, _ref,
   __hasProp = {}.hasOwnProperty,
@@ -781,7 +869,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   
 
 
-  return " <form class=\"form-signin\">\n 	<div class=\"logocontainer\">\n 	<i class=\"fa logo fa-key\"></i>\n </div>\n        <h2 class=\"form-signin-heading\">Please sign in</h2>\n        <input type=\"text\" class=\"form-control\" placeholder=\"Email address\" autofocus>\n        <input type=\"password\" class=\"form-control\" placeholder=\"Password\">\n        <label class=\"checkbox\">\n          <input type=\"checkbox\" value=\"remember-me\"> Remember me\n        </label>\n        <button class=\"btn btn-lg btn-primary btn-block login\" type=\"submit\">Sign in</button>\n      </form>";
+  return " <form class=\"form-signin\">\n 	<div class=\"logocontainer\">\n 	<i class=\"fa logo fa-key\"></i>\n </div>\n        <h2 class=\"form-signin-heading\">Please sign in</h2>\n        <input type=\"text\" class=\"form-control email\" placeholder=\"Email address\" autofocus>\n        <input type=\"password\" class=\"form-control password\" placeholder=\"Password\">\n        <label class=\"checkbox\">\n          <input type=\"checkbox\" value=\"remember-me\"> Remember me\n        </label>\n        <button class=\"btn btn-lg btn-primary btn-block login\" type=\"submit\">Sign in</button>\n        <p>Do not have an account yet? <a href=\"/register\" class=\"btn btn-link\">Register here</a></p>\n      </form>\n";
   });
 if (typeof define === 'function' && define.amd) {
   define([], function() {
@@ -860,6 +948,26 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 
 
   return "<h4>Passwords</h4>";
+  });
+if (typeof define === 'function' && define.amd) {
+  define([], function() {
+    return __templateData;
+  });
+} else if (typeof module === 'object' && module && module.exports) {
+  module.exports = __templateData;
+} else {
+  __templateData;
+}
+});
+
+;require.register("views/templates/register", function(exports, require, module) {
+var __templateData = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
+  
+
+
+  return " <form class=\"form-signin\">\n 	<div class=\"logocontainer\">\n 	<i class=\"fa logo fa-user\"></i>\n </div>\n        <h2 class=\"form-signin-heading\">Register</h2>\n        <input type=\"text\" class=\"form-control email\" placeholder=\"Email address\" autofocus>\n        <input type=\"password\" class=\"form-control middle password\" placeholder=\"Password\"> \n        <input type=\"password\" class=\"form-control repassword\" placeholder=\"Repeat Password\"> \n        <button class=\"btn btn-lg btn-primary btn-block register\" type=\"submit\">Register</button>\n        <p>You alread have an account? <a href=\"/\" class=\"btn btn-link\">Login here</a></p>\n      </form>\n";
   });
 if (typeof define === 'function' && define.amd) {
   define([], function() {
