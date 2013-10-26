@@ -18,7 +18,7 @@ module.exports = class RegisterView extends View
         return
     $(e.target).button "loading"
     plainpw = @$el.find('.password').val()
-    userdata = {email:@$el.find('.email').val(),password:Utils.hash_password(@$el.find('.email').val(),@$el.find('.password').val())}
+    userdata = {email:@$el.find('.email').val(),phone:@$el.find('.phone').val(),password:Utils.hash_password(@$el.find('.email').val(),@$el.find('.password').val())}
     user = new User userdata
     self = @
     user.save()
