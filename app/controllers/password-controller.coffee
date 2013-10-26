@@ -14,3 +14,5 @@ module.exports = class PasswordsController extends AppController
 
   edit: (id)->
     @view = new PasswordView region: 'main'
+  edit: (id)->
+    @view = new PasswordView region: 'main'

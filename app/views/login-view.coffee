@@ -1,4 +1,5 @@
 View = require 'views/base/view'
+Utils = require 'lib/utils'
 
 module.exports = class LoginView extends View
   autoRender: true
@@ -12,7 +13,7 @@ module.exports = class LoginView extends View
   login: (e)->
     e.preventDefault()
     $(e.target).button "loading"
-    userdata = {email:@$el.find('.email').val(),password:@$el.find('.password').val()}
+    userdata = {email:@$el.find('.email').val(),password:Utils.hash_password(@$el.find('.email').val(),@$el.find('.password').val()), plainpw:@$el.find('.password').val()}
     $.ajax( {
     	url:"https://ownpass.marcg.ch/users",
     	beforeSend: (xhr)->

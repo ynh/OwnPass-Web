@@ -8391,5 +8391,12 @@ i.logo {
   font-size: 15em;
 }
 
+.password_row h2 {
+  margin: 0;
+}
+.password_row {
+  margin: 19px 0;
+}
+
 
 /*# sourceMappingURL=app.css.map*/
