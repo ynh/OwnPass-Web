@@ -1,0 +1,32 @@
+{
+  "name": "example-app",
+  "version": "0.1.0",
+  "main": "public/javascripts/app.js",
+  "dependencies": {
+    "chaplin": "~0.11.0",
+    "console-polyfill": "~0.1.0",
+    "lodash": "~2.0.0",
+    "jquery": "~2.0.2",
+    "h5bp-helpers": "~0.1.0",
+    "bootstrap": "~3.0.0",
+    "font-awesome": "~4.0.0",
+    "alertify.js": "~0.3.11"
+  },
+  "overrides": {
+    "backbone": {
+      "dependencies": {
+        "lodash": "*",
+        "jquery": "*"
+      },
+      "main": "backbone.js"
+    },
+    "alertify.js":{
+      "main": ["lib/alertify.js","themes/alertify.core.css","themes/alertify.default.css"]
+    },
+    "font-awesome": {
+      "main": [
+        "./css/font-awesome.css"
+      ]
+    }
+  }
+}
