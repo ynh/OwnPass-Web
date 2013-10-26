@@ -4,3 +4,4 @@ module.exports = (match) ->
   match 'authorize/:devid/:devhash', 'login#authorize'
   match 'passwords', 'password#index'
   match 'passwords/:id', 'password#edit'
+  match 'locations', 'locations#index'

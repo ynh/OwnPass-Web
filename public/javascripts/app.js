@@ -1,2 +1,1641 @@
-!function(){"use strict";var t="undefined"!=typeof window?window:global;if("function"!=typeof t.require){var e={},n={},r=function(t,e){return{}.hasOwnProperty.call(t,e)},i=function(t,e){var n,r,i=[];n=/^\.\.?(\/|$)/.test(e)?[t,e].join("/").split("/"):e.split("/");for(var o=0,s=n.length;s>o;o++)r=n[o],".."===r?i.pop():"."!==r&&""!==r&&i.push(r);return i.join("/")},o=function(t){return t.split("/").slice(0,-1).join("/")},s=function(e){return function(n){var r=o(e),s=i(r,n);return t.require(s,e)}},a=function(t,e){var r={id:t,exports:{}};return n[t]=r,e(r.exports,s(t),r),r.exports},l=function(t,o){var s=i(t,".");if(null==o&&(o="/"),r(n,s))return n[s].exports;if(r(e,s))return a(s,e[s]);var l=i(s,"./index");if(r(n,l))return n[l].exports;if(r(e,l))return a(l,e[l]);throw new Error('Cannot find module "'+t+'" from '+'"'+o+'"')},u=function(t,n){if("object"==typeof t)for(var i in t)r(t,i)&&(e[i]=t[i]);else e[t]=n},c=function(){var t=[];for(var n in e)r(e,n)&&t.push(n);return t};t.require=l,t.require.define=u,t.require.register=u,t.require.list=c,t.require.brunch=!0}}(),require.register("application",function(t,e,n){var r,i,o={}.hasOwnProperty,s=function(t,e){function n(){this.constructor=t}for(var r in e)o.call(e,r)&&(t[r]=e[r]);return n.prototype=e.prototype,t.prototype=new n,t.__super__=e.prototype,t};n.exports=r=function(t){function e(){return i=e.__super__.constructor.apply(this,arguments)}return s(e,t),e}(Chaplin.Application)}),require.register("controllers/base/appcontroller",function(t,e,n){var r,i,o,s,a={}.hasOwnProperty,l=function(t,e){function n(){this.constructor=t}for(var r in e)a.call(e,r)&&(t[r]=e[r]);return n.prototype=e.prototype,t.prototype=new n,t.__super__=e.prototype,t};r=e("controllers/base/controller"),i=e("views/home/header-view"),n.exports=o=function(t){function e(){return s=e.__super__.constructor.apply(this,arguments)}return l(e,t),e.prototype.beforeAction=function(){return e.__super__.beforeAction.apply(this,arguments),this.compose("header",i,{region:"header"})},e}(r)}),require.register("controllers/base/controller",function(t,e,n){var r,i,o,s={}.hasOwnProperty,a=function(t,e){function n(){this.constructor=t}for(var r in e)s.call(e,r)&&(t[r]=e[r]);return n.prototype=e.prototype,t.prototype=new n,t.__super__=e.prototype,t};i=e("views/site-view"),n.exports=r=function(t){function e(){return o=e.__super__.constructor.apply(this,arguments)}return a(e,t),e.prototype.beforeAction=function(){return this.compose("site",i)},e}(Chaplin.Controller)}),require.register("controllers/home-controller",function(t,e,n){var r,i,o,s,a,l={}.hasOwnProperty,u=function(t,e){function n(){this.constructor=t}for(var r in e)l.call(e,r)&&(t[r]=e[r]);return n.prototype=e.prototype,t.prototype=new n,t.__super__=e.prototype,t};r=e("controllers/base/appcontroller"),i=e("views/home/header-view"),s=e("views/home/home-page-view"),n.exports=o=function(t){function e(){return a=e.__super__.constructor.apply(this,arguments)}return u(e,t),e.prototype.index=function(){return this.view=new s({region:"main"})},e}(r)}),require.register("controllers/login-controller",function(t,e,n){var r,i,o,s,a,l,u={}.hasOwnProperty,c=function(t,e){function n(){this.constructor=t}for(var r in e)u.call(e,r)&&(t[r]=e[r]);return n.prototype=e.prototype,t.prototype=new n,t.__super__=e.prototype,t};i=e("controllers/base/controller"),o=e("views/login-view"),a=e("views/register-view"),r=e("views/authorize-view"),n.exports=s=function(t){function e(){return l=e.__super__.constructor.apply(this,arguments)}return c(e,t),e.prototype.index=function(){return this.view=new o({region:"main"})},e.prototype.register=function(){return this.view=new a({region:"main"})},e.prototype.authorize=function(t){return this.view=new r({devid:t.devid,devhash:t.devhash,region:"main"})},e}(i)}),require.register("controllers/password-controller",function(t,e,n){var r,i,o,s,a,l,u,c={}.hasOwnProperty,p=function(t,e){function n(){this.constructor=t}for(var r in e)c.call(e,r)&&(t[r]=e[r]);return n.prototype=e.prototype,t.prototype=new n,t.__super__=e.prototype,t};r=e("controllers/base/appcontroller"),l=e("views/passwords-view"),s=e("views/password-view"),i=e("models/base/collection"),o=e("models/password"),n.exports=a=function(t){function e(){return u=e.__super__.constructor.apply(this,arguments)}return p(e,t),e.prototype.index=function(){return this.passwords=new i(null,{model:o}),this.passwords.url=""+window.api+"passwords",this.view=new l({collection:this.passwords,region:"main"}),this.view.render(),this.passwords.fetch()},e.prototype.edit=function(){return this.view=new s({region:"main"})},e.prototype.edit=function(){return this.view=new s({region:"main"})},e}(r)}),require.register("controllers/user-controller",function(t,e,n){var r,i,o,s={}.hasOwnProperty,a=function(t,e){function n(){this.constructor=t}for(var r in e)s.call(e,r)&&(t[r]=e[r]);return n.prototype=e.prototype,t.prototype=new n,t.__super__=e.prototype,t};r=e("controllers/base/appcontroller"),n.exports=i=function(t){function e(){return o=e.__super__.constructor.apply(this,arguments)}return a(e,t),e}(r)}),require.register("initialize",function(t,e){var n,r;n=e("application"),r=e("routes"),window.api="https://ownpass.marcg.ch/",$(function(){return $.ajaxSetup({beforeSend:function(t){return null!=window.user?t.setRequestHeader("Authorization","Basic "+btoa(window.user.email+":"+window.user.password)):void 0},statusCode:{401:function(t){var e;return e=$.parseJSON(t.responseText),null!=e.id&&null!=e.device?(Chaplin.helpers.redirectTo("login#authorize",{devid:e.id,devhash:e.device}),void 0):(alertify.error(e.message),Chaplin.helpers.redirectTo("login#index",{}))},403:function(){return alertify.error("Invalid resource"),Chaplin.helpers.redirectTo("login#index",{})},404:function(t){var e;return e=$.parseJSON(t.responseText),alertify.error(e.message)},406:function(){return alertify.error("Please fill out the form")},409:function(){return alertify.error("User name taken")},500:function(){return alertify.error("OOPPSSS! Some thing unexpected happened!"),Chaplin.helpers.redirectTo("login#index",{})}}}),new n({title:"OwnPass",pushState:!1,controllerSuffix:"-controller",routes:r})})}),require.register("lib/cryptojs",function(t,e,n){var r=r||function(t,e){var n={},r=n.lib={},i=function(){},o=r.Base={extend:function(t){i.prototype=this;var e=new i;return t&&e.mixIn(t),e.hasOwnProperty("init")||(e.init=function(){e.$super.init.apply(this,arguments)}),e.init.prototype=e,e.$super=this,e},create:function(){var t=this.extend();return t.init.apply(t,arguments),t},init:function(){},mixIn:function(t){for(var e in t)t.hasOwnProperty(e)&&(this[e]=t[e]);t.hasOwnProperty("toString")&&(this.toString=t.toString)},clone:function(){return this.init.prototype.extend(this)}},s=r.WordArray=o.extend({init:function(t,n){t=this.words=t||[],this.sigBytes=n!=e?n:4*t.length},toString:function(t){return(t||l).stringify(this)},concat:function(t){var e=this.words,n=t.words,r=this.sigBytes;if(t=t.sigBytes,this.clamp(),r%4)for(var i=0;t>i;i++)e[r+i>>>2]|=(255&n[i>>>2]>>>24-8*(i%4))<<24-8*((r+i)%4);else if(65535<n.length)for(i=0;t>i;i+=4)e[r+i>>>2]=n[i>>>2];else e.push.apply(e,n);return this.sigBytes+=t,this},clamp:function(){var e=this.words,n=this.sigBytes;e[n>>>2]&=4294967295<<32-8*(n%4),e.length=t.ceil(n/4)},clone:function(){var t=o.clone.call(this);return t.words=this.words.slice(0),t},random:function(e){for(var n=[],r=0;e>r;r+=4)n.push(0|4294967296*t.random());return new s.init(n,e)}}),a=n.enc={},l=a.Hex={stringify:function(t){var e=t.words;t=t.sigBytes;for(var n=[],r=0;t>r;r++){var i=255&e[r>>>2]>>>24-8*(r%4);n.push((i>>>4).toString(16)),n.push((15&i).toString(16))}return n.join("")},parse:function(t){for(var e=t.length,n=[],r=0;e>r;r+=2)n[r>>>3]|=parseInt(t.substr(r,2),16)<<24-4*(r%8);return new s.init(n,e/2)}},u=a.Latin1={stringify:function(t){var e=t.words;t=t.sigBytes;for(var n=[],r=0;t>r;r++)n.push(String.fromCharCode(255&e[r>>>2]>>>24-8*(r%4)));return n.join("")},parse:function(t){for(var e=t.length,n=[],r=0;e>r;r++)n[r>>>2]|=(255&t.charCodeAt(r))<<24-8*(r%4);return new s.init(n,e)}},c=a.Utf8={stringify:function(t){try{return decodeURIComponent(escape(u.stringify(t)))}catch(e){throw Error("Malformed UTF-8 data")}},parse:function(t){return u.parse(unescape(encodeURIComponent(t)))}},p=r.BufferedBlockAlgorithm=o.extend({reset:function(){this._data=new s.init,this._nDataBytes=0},_append:function(t){"string"==typeof t&&(t=c.parse(t)),this._data.concat(t),this._nDataBytes+=t.sigBytes},_process:function(e){var n=this._data,r=n.words,i=n.sigBytes,o=this.blockSize,a=i/(4*o),a=e?t.ceil(a):t.max((0|a)-this._minBufferSize,0);if(e=a*o,i=t.min(4*e,i),e){for(var l=0;e>l;l+=o)this._doProcessBlock(r,l);l=r.splice(0,e),n.sigBytes-=i}return new s.init(l,i)},clone:function(){var t=o.clone.call(this);return t._data=this._data.clone(),t},_minBufferSize:0});r.Hasher=p.extend({cfg:o.extend(),init:function(t){this.cfg=this.cfg.extend(t),this.reset()},reset:function(){p.reset.call(this),this._doReset()},update:function(t){return this._append(t),this._process(),this},finalize:function(t){return t&&this._append(t),this._doFinalize()},blockSize:16,_createHelper:function(t){return function(e,n){return new t.init(n).finalize(e)}},_createHmacHelper:function(t){return function(e,n){return new f.HMAC.init(t,n).finalize(e)}}});var f=n.algo={};return n}(Math);!function(t){for(var e=r,n=e.lib,i=n.WordArray,o=n.Hasher,n=e.algo,s=[],a=[],l=function(t){return 0|4294967296*(t-(0|t))},u=2,c=0;64>c;){var p;t:{p=u;for(var f=t.sqrt(p),h=2;f>=h;h++)if(!(p%h)){p=!1;break t}p=!0}p&&(8>c&&(s[c]=l(t.pow(u,.5))),a[c]=l(t.pow(u,1/3)),c++),u++}var d=[],n=n.SHA256=o.extend({_doReset:function(){this._hash=new i.init(s.slice(0))},_doProcessBlock:function(t,e){for(var n=this._hash.words,r=n[0],i=n[1],o=n[2],s=n[3],l=n[4],u=n[5],c=n[6],p=n[7],f=0;64>f;f++){if(16>f)d[f]=0|t[e+f];else{var h=d[f-15],g=d[f-2];d[f]=((h<<25|h>>>7)^(h<<14|h>>>18)^h>>>3)+d[f-7]+((g<<15|g>>>17)^(g<<13|g>>>19)^g>>>10)+d[f-16]}h=p+((l<<26|l>>>6)^(l<<21|l>>>11)^(l<<7|l>>>25))+(l&u^~l&c)+a[f]+d[f],g=((r<<30|r>>>2)^(r<<19|r>>>13)^(r<<10|r>>>22))+(r&i^r&o^i&o),p=c,c=u,u=l,l=0|s+h,s=o,o=i,i=r,r=0|h+g}n[0]=0|n[0]+r,n[1]=0|n[1]+i,n[2]=0|n[2]+o,n[3]=0|n[3]+s,n[4]=0|n[4]+l,n[5]=0|n[5]+u,n[6]=0|n[6]+c,n[7]=0|n[7]+p},_doFinalize:function(){var e=this._data,n=e.words,r=8*this._nDataBytes,i=8*e.sigBytes;return n[i>>>5]|=128<<24-i%32,n[(i+64>>>9<<4)+14]=t.floor(r/4294967296),n[(i+64>>>9<<4)+15]=r,e.sigBytes=4*n.length,this._process(),this._hash},clone:function(){var t=o.clone.call(this);return t._hash=this._hash.clone(),t}});e.SHA256=o._createHelper(n),e.HmacSHA256=o._createHmacHelper(n)}(Math),function(){var t=r,e=t.lib.WordArray;t.enc.Base64={stringify:function(t){var e=t.words,n=t.sigBytes,r=this._map;t.clamp(),t=[];for(var i=0;n>i;i+=3)for(var o=(255&e[i>>>2]>>>24-8*(i%4))<<16|(255&e[i+1>>>2]>>>24-8*((i+1)%4))<<8|255&e[i+2>>>2]>>>24-8*((i+2)%4),s=0;4>s&&n>i+.75*s;s++)t.push(r.charAt(63&o>>>6*(3-s)));if(e=r.charAt(64))for(;t.length%4;)t.push(e);return t.join("")},parse:function(t){var n=t.length,r=this._map,i=r.charAt(64);i&&(i=t.indexOf(i),-1!=i&&(n=i));for(var i=[],o=0,s=0;n>s;s++)if(s%4){var a=r.indexOf(t.charAt(s-1))<<2*(s%4),l=r.indexOf(t.charAt(s))>>>6-2*(s%4);i[o>>>2]|=(a|l)<<24-8*(o%4),o++}return e.create(i,o)},_map:"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/="}}();var r=r||function(t,e){var n={},r=n.lib={},i=function(){},o=r.Base={extend:function(t){i.prototype=this;var e=new i;return t&&e.mixIn(t),e.hasOwnProperty("init")||(e.init=function(){e.$super.init.apply(this,arguments)}),e.init.prototype=e,e.$super=this,e},create:function(){var t=this.extend();return t.init.apply(t,arguments),t},init:function(){},mixIn:function(t){for(var e in t)t.hasOwnProperty(e)&&(this[e]=t[e]);t.hasOwnProperty("toString")&&(this.toString=t.toString)},clone:function(){return this.init.prototype.extend(this)}},s=r.WordArray=o.extend({init:function(t,n){t=this.words=t||[],this.sigBytes=n!=e?n:4*t.length},toString:function(t){return(t||l).stringify(this)},concat:function(t){var e=this.words,n=t.words,r=this.sigBytes;if(t=t.sigBytes,this.clamp(),r%4)for(var i=0;t>i;i++)e[r+i>>>2]|=(255&n[i>>>2]>>>24-8*(i%4))<<24-8*((r+i)%4);else if(65535<n.length)for(i=0;t>i;i+=4)e[r+i>>>2]=n[i>>>2];else e.push.apply(e,n);return this.sigBytes+=t,this},clamp:function(){var e=this.words,n=this.sigBytes;e[n>>>2]&=4294967295<<32-8*(n%4),e.length=t.ceil(n/4)},clone:function(){var t=o.clone.call(this);return t.words=this.words.slice(0),t},random:function(e){for(var n=[],r=0;e>r;r+=4)n.push(0|4294967296*t.random());return new s.init(n,e)}}),a=n.enc={},l=a.Hex={stringify:function(t){var e=t.words;t=t.sigBytes;for(var n=[],r=0;t>r;r++){var i=255&e[r>>>2]>>>24-8*(r%4);n.push((i>>>4).toString(16)),n.push((15&i).toString(16))}return n.join("")},parse:function(t){for(var e=t.length,n=[],r=0;e>r;r+=2)n[r>>>3]|=parseInt(t.substr(r,2),16)<<24-4*(r%8);return new s.init(n,e/2)}},u=a.Latin1={stringify:function(t){var e=t.words;t=t.sigBytes;for(var n=[],r=0;t>r;r++)n.push(String.fromCharCode(255&e[r>>>2]>>>24-8*(r%4)));return n.join("")},parse:function(t){for(var e=t.length,n=[],r=0;e>r;r++)n[r>>>2]|=(255&t.charCodeAt(r))<<24-8*(r%4);return new s.init(n,e)}},c=a.Utf8={stringify:function(t){try{return decodeURIComponent(escape(u.stringify(t)))}catch(e){throw Error("Malformed UTF-8 data")}},parse:function(t){return u.parse(unescape(encodeURIComponent(t)))}},p=r.BufferedBlockAlgorithm=o.extend({reset:function(){this._data=new s.init,this._nDataBytes=0},_append:function(t){"string"==typeof t&&(t=c.parse(t)),this._data.concat(t),this._nDataBytes+=t.sigBytes},_process:function(e){var n=this._data,r=n.words,i=n.sigBytes,o=this.blockSize,a=i/(4*o),a=e?t.ceil(a):t.max((0|a)-this._minBufferSize,0);if(e=a*o,i=t.min(4*e,i),e){for(var l=0;e>l;l+=o)this._doProcessBlock(r,l);l=r.splice(0,e),n.sigBytes-=i}return new s.init(l,i)},clone:function(){var t=o.clone.call(this);return t._data=this._data.clone(),t},_minBufferSize:0});r.Hasher=p.extend({cfg:o.extend(),init:function(t){this.cfg=this.cfg.extend(t),this.reset()},reset:function(){p.reset.call(this),this._doReset()},update:function(t){return this._append(t),this._process(),this},finalize:function(t){return t&&this._append(t),this._doFinalize()},blockSize:16,_createHelper:function(t){return function(e,n){return new t.init(n).finalize(e)}},_createHmacHelper:function(t){return function(e,n){return new f.HMAC.init(t,n).finalize(e)}}});var f=n.algo={};return n}(Math);!function(){var t=r,e=t.lib.WordArray;t.enc.Base64={stringify:function(t){var e=t.words,n=t.sigBytes,r=this._map;t.clamp(),t=[];for(var i=0;n>i;i+=3)for(var o=(255&e[i>>>2]>>>24-8*(i%4))<<16|(255&e[i+1>>>2]>>>24-8*((i+1)%4))<<8|255&e[i+2>>>2]>>>24-8*((i+2)%4),s=0;4>s&&n>i+.75*s;s++)t.push(r.charAt(63&o>>>6*(3-s)));if(e=r.charAt(64))for(;t.length%4;)t.push(e);return t.join("")},parse:function(t){var n=t.length,r=this._map,i=r.charAt(64);i&&(i=t.indexOf(i),-1!=i&&(n=i));for(var i=[],o=0,s=0;n>s;s++)if(s%4){var a=r.indexOf(t.charAt(s-1))<<2*(s%4),l=r.indexOf(t.charAt(s))>>>6-2*(s%4);i[o>>>2]|=(a|l)<<24-8*(o%4),o++}return e.create(i,o)},_map:"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/="}}(),function(t){function e(t,e,n,r,i,o,s){return t=t+(e&n|~e&r)+i+s,(t<<o|t>>>32-o)+e}function n(t,e,n,r,i,o,s){return t=t+(e&r|n&~r)+i+s,(t<<o|t>>>32-o)+e}function i(t,e,n,r,i,o,s){return t=t+(e^n^r)+i+s,(t<<o|t>>>32-o)+e}function o(t,e,n,r,i,o,s){return t=t+(n^(e|~r))+i+s,(t<<o|t>>>32-o)+e}for(var s=r,a=s.lib,l=a.WordArray,u=a.Hasher,a=s.algo,c=[],p=0;64>p;p++)c[p]=0|4294967296*t.abs(t.sin(p+1));a=a.MD5=u.extend({_doReset:function(){this._hash=new l.init([1732584193,4023233417,2562383102,271733878])},_doProcessBlock:function(t,r){for(var s=0;16>s;s++){var a=r+s,l=t[a];t[a]=16711935&(l<<8|l>>>24)|4278255360&(l<<24|l>>>8)}var s=this._hash.words,a=t[r+0],l=t[r+1],u=t[r+2],p=t[r+3],f=t[r+4],h=t[r+5],d=t[r+6],g=t[r+7],y=t[r+8],m=t[r+9],v=t[r+10],b=t[r+11],w=t[r+12],x=t[r+13],_=t[r+14],k=t[r+15],C=s[0],E=s[1],S=s[2],T=s[3],C=e(C,E,S,T,a,7,c[0]),T=e(T,C,E,S,l,12,c[1]),S=e(S,T,C,E,u,17,c[2]),E=e(E,S,T,C,p,22,c[3]),C=e(C,E,S,T,f,7,c[4]),T=e(T,C,E,S,h,12,c[5]),S=e(S,T,C,E,d,17,c[6]),E=e(E,S,T,C,g,22,c[7]),C=e(C,E,S,T,y,7,c[8]),T=e(T,C,E,S,m,12,c[9]),S=e(S,T,C,E,v,17,c[10]),E=e(E,S,T,C,b,22,c[11]),C=e(C,E,S,T,w,7,c[12]),T=e(T,C,E,S,x,12,c[13]),S=e(S,T,C,E,_,17,c[14]),E=e(E,S,T,C,k,22,c[15]),C=n(C,E,S,T,l,5,c[16]),T=n(T,C,E,S,d,9,c[17]),S=n(S,T,C,E,b,14,c[18]),E=n(E,S,T,C,a,20,c[19]),C=n(C,E,S,T,h,5,c[20]),T=n(T,C,E,S,v,9,c[21]),S=n(S,T,C,E,k,14,c[22]),E=n(E,S,T,C,f,20,c[23]),C=n(C,E,S,T,m,5,c[24]),T=n(T,C,E,S,_,9,c[25]),S=n(S,T,C,E,p,14,c[26]),E=n(E,S,T,C,y,20,c[27]),C=n(C,E,S,T,x,5,c[28]),T=n(T,C,E,S,u,9,c[29]),S=n(S,T,C,E,g,14,c[30]),E=n(E,S,T,C,w,20,c[31]),C=i(C,E,S,T,h,4,c[32]),T=i(T,C,E,S,y,11,c[33]),S=i(S,T,C,E,b,16,c[34]),E=i(E,S,T,C,_,23,c[35]),C=i(C,E,S,T,l,4,c[36]),T=i(T,C,E,S,f,11,c[37]),S=i(S,T,C,E,g,16,c[38]),E=i(E,S,T,C,v,23,c[39]),C=i(C,E,S,T,x,4,c[40]),T=i(T,C,E,S,a,11,c[41]),S=i(S,T,C,E,p,16,c[42]),E=i(E,S,T,C,d,23,c[43]),C=i(C,E,S,T,m,4,c[44]),T=i(T,C,E,S,w,11,c[45]),S=i(S,T,C,E,k,16,c[46]),E=i(E,S,T,C,u,23,c[47]),C=o(C,E,S,T,a,6,c[48]),T=o(T,C,E,S,g,10,c[49]),S=o(S,T,C,E,_,15,c[50]),E=o(E,S,T,C,h,21,c[51]),C=o(C,E,S,T,w,6,c[52]),T=o(T,C,E,S,p,10,c[53]),S=o(S,T,C,E,v,15,c[54]),E=o(E,S,T,C,l,21,c[55]),C=o(C,E,S,T,y,6,c[56]),T=o(T,C,E,S,k,10,c[57]),S=o(S,T,C,E,d,15,c[58]),E=o(E,S,T,C,x,21,c[59]),C=o(C,E,S,T,f,6,c[60]),T=o(T,C,E,S,b,10,c[61]),S=o(S,T,C,E,u,15,c[62]),E=o(E,S,T,C,m,21,c[63]);s[0]=0|s[0]+C,s[1]=0|s[1]+E,s[2]=0|s[2]+S,s[3]=0|s[3]+T},_doFinalize:function(){var e=this._data,n=e.words,r=8*this._nDataBytes,i=8*e.sigBytes;n[i>>>5]|=128<<24-i%32;var o=t.floor(r/4294967296);for(n[(i+64>>>9<<4)+15]=16711935&(o<<8|o>>>24)|4278255360&(o<<24|o>>>8),n[(i+64>>>9<<4)+14]=16711935&(r<<8|r>>>24)|4278255360&(r<<24|r>>>8),e.sigBytes=4*(n.length+1),this._process(),e=this._hash,n=e.words,r=0;4>r;r++)i=n[r],n[r]=16711935&(i<<8|i>>>24)|4278255360&(i<<24|i>>>8);return e},clone:function(){var t=u.clone.call(this);return t._hash=this._hash.clone(),t}}),s.MD5=u._createHelper(a),s.HmacMD5=u._createHmacHelper(a)}(Math),function(){var t=r,e=t.lib,n=e.Base,i=e.WordArray,e=t.algo,o=e.EvpKDF=n.extend({cfg:n.extend({keySize:4,hasher:e.MD5,iterations:1}),init:function(t){this.cfg=this.cfg.extend(t)},compute:function(t,e){for(var n=this.cfg,r=n.hasher.create(),o=i.create(),s=o.words,a=n.keySize,n=n.iterations;s.length<a;){l&&r.update(l);var l=r.update(t).finalize(e);r.reset();for(var u=1;n>u;u++)l=r.finalize(l),r.reset();o.concat(l)}return o.sigBytes=4*a,o}});t.EvpKDF=function(t,e,n){return o.create(n).compute(t,e)}}(),r.lib.Cipher||function(t){var e=r,n=e.lib,i=n.Base,o=n.WordArray,s=n.BufferedBlockAlgorithm,a=e.enc.Base64,l=e.algo.EvpKDF,u=n.Cipher=s.extend({cfg:i.extend(),createEncryptor:function(t,e){return this.create(this._ENC_XFORM_MODE,t,e)},createDecryptor:function(t,e){return this.create(this._DEC_XFORM_MODE,t,e)},init:function(t,e,n){this.cfg=this.cfg.extend(n),this._xformMode=t,this._key=e,this.reset()},reset:function(){s.reset.call(this),this._doReset()},process:function(t){return this._append(t),this._process()},finalize:function(t){return t&&this._append(t),this._doFinalize()},keySize:4,ivSize:4,_ENC_XFORM_MODE:1,_DEC_XFORM_MODE:2,_createHelper:function(t){return{encrypt:function(e,n,r){return("string"==typeof n?g:d).encrypt(t,e,n,r)},decrypt:function(e,n,r){return("string"==typeof n?g:d).decrypt(t,e,n,r)}}}});n.StreamCipher=u.extend({_doFinalize:function(){return this._process(!0)},blockSize:1});var c=e.mode={},p=function(e,n,r){var i=this._iv;i?this._iv=t:i=this._prevBlock;for(var o=0;r>o;o++)e[n+o]^=i[o]},f=(n.BlockCipherMode=i.extend({createEncryptor:function(t,e){return this.Encryptor.create(t,e)},createDecryptor:function(t,e){return this.Decryptor.create(t,e)},init:function(t,e){this._cipher=t,this._iv=e}})).extend();f.Encryptor=f.extend({processBlock:function(t,e){var n=this._cipher,r=n.blockSize;p.call(this,t,e,r),n.encryptBlock(t,e),this._prevBlock=t.slice(e,e+r)}}),f.Decryptor=f.extend({processBlock:function(t,e){var n=this._cipher,r=n.blockSize,i=t.slice(e,e+r);n.decryptBlock(t,e),p.call(this,t,e,r),this._prevBlock=i}}),c=c.CBC=f,f=(e.pad={}).Pkcs7={pad:function(t,e){for(var n=4*e,n=n-t.sigBytes%n,r=n<<24|n<<16|n<<8|n,i=[],s=0;n>s;s+=4)i.push(r);n=o.create(i,n),t.concat(n)},unpad:function(t){t.sigBytes-=255&t.words[t.sigBytes-1>>>2]}},n.BlockCipher=u.extend({cfg:u.cfg.extend({mode:c,padding:f}),reset:function(){u.reset.call(this);var t=this.cfg,e=t.iv,t=t.mode;if(this._xformMode==this._ENC_XFORM_MODE)var n=t.createEncryptor;else n=t.createDecryptor,this._minBufferSize=1;this._mode=n.call(t,this,e&&e.words)},_doProcessBlock:function(t,e){this._mode.processBlock(t,e)},_doFinalize:function(){var t=this.cfg.padding;if(this._xformMode==this._ENC_XFORM_MODE){t.pad(this._data,this.blockSize);var e=this._process(!0)}else e=this._process(!0),t.unpad(e);return e},blockSize:4});var h=n.CipherParams=i.extend({init:function(t){this.mixIn(t)},toString:function(t){return(t||this.formatter).stringify(this)}}),c=(e.format={}).OpenSSL={stringify:function(t){var e=t.ciphertext;return t=t.salt,(t?o.create([1398893684,1701076831]).concat(t).concat(e):e).toString(a)},parse:function(t){t=a.parse(t);var e=t.words;if(1398893684==e[0]&&1701076831==e[1]){var n=o.create(e.slice(2,4));e.splice(0,4),t.sigBytes-=16}return h.create({ciphertext:t,salt:n})}},d=n.SerializableCipher=i.extend({cfg:i.extend({format:c}),encrypt:function(t,e,n,r){r=this.cfg.extend(r);var i=t.createEncryptor(n,r);return e=i.finalize(e),i=i.cfg,h.create({ciphertext:e,key:n,iv:i.iv,algorithm:t,mode:i.mode,padding:i.padding,blockSize:t.blockSize,formatter:r.format})},decrypt:function(t,e,n,r){return r=this.cfg.extend(r),e=this._parse(e,r.format),t.createDecryptor(n,r).finalize(e.ciphertext)},_parse:function(t,e){return"string"==typeof t?e.parse(t,this):t}}),e=(e.kdf={}).OpenSSL={execute:function(t,e,n,r){return r||(r=o.random(8)),t=l.create({keySize:e+n}).compute(t,r),n=o.create(t.words.slice(e),4*n),t.sigBytes=4*e,h.create({key:t,iv:n,salt:r})}},g=n.PasswordBasedCipher=d.extend({cfg:d.cfg.extend({kdf:e}),encrypt:function(t,e,n,r){return r=this.cfg.extend(r),n=r.kdf.execute(n,t.keySize,t.ivSize),r.iv=n.iv,t=d.encrypt.call(this,t,e,n.key,r),t.mixIn(n),t},decrypt:function(t,e,n,r){return r=this.cfg.extend(r),e=this._parse(e,r.format),n=r.kdf.execute(n,t.keySize,t.ivSize,e.salt),r.iv=n.iv,d.decrypt.call(this,t,e,n.key,r)}})}(),function(){for(var t=r,e=t.lib.BlockCipher,n=t.algo,i=[],o=[],s=[],a=[],l=[],u=[],c=[],p=[],f=[],h=[],d=[],g=0;256>g;g++)d[g]=128>g?g<<1:283^g<<1;for(var y=0,m=0,g=0;256>g;g++){var v=m^m<<1^m<<2^m<<3^m<<4,v=99^(v>>>8^255&v);i[y]=v,o[v]=y;var b=d[y],w=d[b],x=d[w],_=257*d[v]^16843008*v;s[y]=_<<24|_>>>8,a[y]=_<<16|_>>>16,l[y]=_<<8|_>>>24,u[y]=_,_=16843009*x^65537*w^257*b^16843008*y,c[v]=_<<24|_>>>8,p[v]=_<<16|_>>>16,f[v]=_<<8|_>>>24,h[v]=_,y?(y=b^d[d[d[x^b]]],m^=d[d[m]]):y=m=1}var k=[0,1,2,4,8,16,32,64,128,27,54],n=n.AES=e.extend({_doReset:function(){for(var t=this._key,e=t.words,n=t.sigBytes/4,t=4*((this._nRounds=n+6)+1),r=this._keySchedule=[],o=0;t>o;o++)if(n>o)r[o]=e[o];else{var s=r[o-1];o%n?n>6&&4==o%n&&(s=i[s>>>24]<<24|i[255&s>>>16]<<16|i[255&s>>>8]<<8|i[255&s]):(s=s<<8|s>>>24,s=i[s>>>24]<<24|i[255&s>>>16]<<16|i[255&s>>>8]<<8|i[255&s],s^=k[0|o/n]<<24),r[o]=r[o-n]^s}for(e=this._invKeySchedule=[],n=0;t>n;n++)o=t-n,s=n%4?r[o]:r[o-4],e[n]=4>n||4>=o?s:c[i[s>>>24]]^p[i[255&s>>>16]]^f[i[255&s>>>8]]^h[i[255&s]]},encryptBlock:function(t,e){this._doCryptBlock(t,e,this._keySchedule,s,a,l,u,i)},decryptBlock:function(t,e){var n=t[e+1];t[e+1]=t[e+3],t[e+3]=n,this._doCryptBlock(t,e,this._invKeySchedule,c,p,f,h,o),n=t[e+1],t[e+1]=t[e+3],t[e+3]=n},_doCryptBlock:function(t,e,n,r,i,o,s,a){for(var l=this._nRounds,u=t[e]^n[0],c=t[e+1]^n[1],p=t[e+2]^n[2],f=t[e+3]^n[3],h=4,d=1;l>d;d++)var g=r[u>>>24]^i[255&c>>>16]^o[255&p>>>8]^s[255&f]^n[h++],y=r[c>>>24]^i[255&p>>>16]^o[255&f>>>8]^s[255&u]^n[h++],m=r[p>>>24]^i[255&f>>>16]^o[255&u>>>8]^s[255&c]^n[h++],f=r[f>>>24]^i[255&u>>>16]^o[255&c>>>8]^s[255&p]^n[h++],u=g,c=y,p=m;g=(a[u>>>24]<<24|a[255&c>>>16]<<16|a[255&p>>>8]<<8|a[255&f])^n[h++],y=(a[c>>>24]<<24|a[255&p>>>16]<<16|a[255&f>>>8]<<8|a[255&u])^n[h++],m=(a[p>>>24]<<24|a[255&f>>>16]<<16|a[255&u>>>8]<<8|a[255&c])^n[h++],f=(a[f>>>24]<<24|a[255&u>>>16]<<16|a[255&c>>>8]<<8|a[255&p])^n[h++],t[e]=g,t[e+1]=y,t[e+2]=m,t[e+3]=f},keySize:8});t.AES=e._createHelper(n)}(),n.exports=r}),require.register("lib/utils",function(t,e,n){var r,i;i=Chaplin.utils.beget(Chaplin.utils),r=e("lib/cryptojs"),_(i).extend({hash_password:function(t,e){return r.SHA256(e).toString(r.enc.Base64)},get_secret:function(){return r.SHA256(window.user.plainpw).toString(r.enc.Base64)},get_iv:function(){return r.SHA256(window.user.plainpw).toString(r.enc.Base64)},encrypt:function(t){var e;return e=r.AES.encrypt(t,i.get_secret()),e.iv.toString(r.enc.Base64)+":"+e.salt.toString(r.enc.Base64)+":"+e.ciphertext.toString(r.enc.Base64)},decrypt:function(t){var e;return e=t.split(":"),r.AES.decrypt(r.lib.CipherParams.create({iv:r.enc.Base64.parse(e[0]),ciphertext:r.enc.Base64.parse(e[2]),salt:r.enc.Base64.parse(e[1])}),i.get_secret()).toString(r.enc.Utf8)}}),"function"==typeof Object.seal&&Object.seal(i),n.exports=i}),require.register("lib/view-helper",function(){var t,e=[].slice;t=function(t,e){return Handlebars.registerHelper(t,e)},t("with",function(t){return!t||Handlebars.Utils.isEmpty(t)?options.inverse(this):options.fn(t)}),t("withUser",function(t){return t.fn(window.user||{email:""})}),t("withWindow",function(t){return t.fn(window)}),t("without",function(t,e){var n;return n=e.inverse,e.inverse=e.fn,e.fn=n,Handlebars.helpers["with"].call(this,t,e)}),t("url",function(){var t,n,r,i;return r=arguments[0],n=3<=arguments.length?e.call(arguments,1,i=arguments.length-1):(i=1,[]),t=arguments[i++],Chaplin.helpers.reverse(r,n)})}),require.register("mediator",function(t,e,n){var r;r=n.exports=Chaplin.mediator}),require.register("models/base/collection",function(t,e,n){var r,i,o,s={}.hasOwnProperty,a=function(t,e){function n(){this.constructor=t}for(var r in e)s.call(e,r)&&(t[r]=e[r]);return n.prototype=e.prototype,t.prototype=new n,t.__super__=e.prototype,t};i=e("./model"),n.exports=r=function(t){function e(){return o=e.__super__.constructor.apply(this,arguments)}return a(e,t),e.prototype.model=i,e}(Chaplin.Collection)}),require.register("models/base/model",function(t,e,n){var r,i,o={}.hasOwnProperty,s=function(t,e){function n(){this.constructor=t}for(var r in e)o.call(e,r)&&(t[r]=e[r]);return n.prototype=e.prototype,t.prototype=new n,t.__super__=e.prototype,t};n.exports=r=function(t){function e(){return i=e.__super__.constructor.apply(this,arguments)}return s(e,t),e.prototype.idAttribute="id",e}(Chaplin.Model)}),require.register("models/password",function(t,e,n){var r,i,o,s={}.hasOwnProperty,a=function(t,e){function n(){this.constructor=t}for(var r in e)s.call(e,r)&&(t[r]=e[r]);return n.prototype=e.prototype,t.prototype=new n,t.__super__=e.prototype,t};r=e("/models/base/model"),n.exports=i=function(t){function e(){return o=e.__super__.constructor.apply(this,arguments)}return a(e,t),e.prototype.urlRoot="https://ownpass.marcg.ch/passwords",e}(r)}),require.register("models/user",function(t,e,n){var r,i,o,s,a={}.hasOwnProperty,l=function(t,e){function n(){this.constructor=t}for(var r in e)a.call(e,r)&&(t[r]=e[r]);return n.prototype=e.prototype,t.prototype=new n,t.__super__=e.prototype,t};r=e("/models/base/model"),o=e("lib/utils"),n.exports=i=function(t){function e(){return s=e.__super__.constructor.apply(this,arguments)}return l(e,t),e.prototype.urlRoot=""+window.api+"users",e}(r)}),require.register("routes",function(t,e,n){n.exports=function(t){return t("","login#index"),t("register","login#register"),t("authorize/:devid/:devhash","login#authorize"),t("passwords","password#index"),t("passwords/:id","password#edit")}}),require.register("views/authorize-view",function(t,e,n){var r,i,o,s={}.hasOwnProperty,a=function(t,e){function n(){this.constructor=t}for(var r in e)s.call(e,r)&&(t[r]=e[r]);return n.prototype=e.prototype,t.prototype=new n,t.__super__=e.prototype,t};i=e("views/base/view"),n.exports=r=function(t){function n(){return o=n.__super__.constructor.apply(this,arguments)}return a(n,t),n.prototype.autoRender=!0,n.prototype.className="home-page",n.prototype.template=e("./templates/authorize"),n.prototype.initialize=function(t){return n.__super__.initialize.apply(this,arguments),this.devid=t.devid,this.devhash=t.devhash,this.delegate("click",".authorize",this.authorize)},n.prototype.authorize=function(t){return t.preventDefault(),$(t.target).button("loading"),$.ajax({method:"PUT",data:JSON.stringify({device:this.devhash,active:!0,code:this.$el.find(".auth").val()}),contentType:"application/json; charset=utf-8",url:"https://ownpass.marcg.ch/devices/"+this.devid}).done(function(){return Chaplin.helpers.redirectTo("login#index",{})}).always(function(){return $(t.target).button("reset")})},n}(i)}),require.register("views/base/collection-view",function(t,e,n){var r,i,o,s={}.hasOwnProperty,a=function(t,e){function n(){this.constructor=t}for(var r in e)s.call(e,r)&&(t[r]=e[r]);return n.prototype=e.prototype,t.prototype=new n,t.__super__=e.prototype,t};i=e("./view"),n.exports=r=function(t){function e(){return o=e.__super__.constructor.apply(this,arguments)}return a(e,t),e.prototype.getTemplateFunction=i.prototype.getTemplateFunction,e}(Chaplin.CollectionView)}),require.register("views/base/view",function(t,e,n){var r,i,o={}.hasOwnProperty,s=function(t,e){function n(){this.constructor=t}for(var r in e)o.call(e,r)&&(t[r]=e[r]);return n.prototype=e.prototype,t.prototype=new n,t.__super__=e.prototype,t};e("lib/view-helper"),n.exports=r=function(t){function e(){return i=e.__super__.constructor.apply(this,arguments)}return s(e,t),e.prototype.optionNames=Chaplin.View.prototype.optionNames.concat(["template"]),e.prototype.getTemplateFunction=function(){return this.template},e}(Chaplin.View)}),require.register("views/home/header-view",function(t,e,n){var r,i,o,s={}.hasOwnProperty,a=function(t,e){function n(){this.constructor=t}for(var r in e)s.call(e,r)&&(t[r]=e[r]);return n.prototype=e.prototype,t.prototype=new n,t.__super__=e.prototype,t};i=e("views/base/view"),n.exports=r=function(t){function n(){return o=n.__super__.constructor.apply(this,arguments)}return a(n,t),n.prototype.autoRender=!0,n.prototype.className="navbar navbar-default",n.prototype.tagName="header",n.prototype.template=e("./templates/header"),n}(i)}),require.register("views/home/home-page-view",function(t,e,n){var r,i,o,s={}.hasOwnProperty,a=function(t,e){function n(){this.constructor=t}for(var r in e)s.call(e,r)&&(t[r]=e[r]);return n.prototype=e.prototype,t.prototype=new n,t.__super__=e.prototype,t};i=e("views/base/view"),n.exports=r=function(t){function n(){return o=n.__super__.constructor.apply(this,arguments)}return a(n,t),n.prototype.autoRender=!0,n.prototype.className="home-page",n.prototype.template=e("./templates/home"),n}(i)}),require.register("views/home/templates/header",function(t,e,n){var r=Handlebars.template(function(t,e,n,r,i){function o(t,e){var r;return(r=n.email)?r=r.call(t,{hash:{},data:e}):(r=t.email,r=typeof r===c?r.apply(t):r),p(r)}function s(t,e){var r;return(r=n.api)?r=r.call(t,{hash:{},data:e}):(r=t.api,r=typeof r===c?r.apply(t):r),p(r)}this.compilerInfo=[4,">= 1.0.0"],n=this.merge(n,t.helpers),i=i||{};var a,l,u="",c="function",p=this.escapeExpression,f=this,h=n.blockHelperMissing;return u+='\n        <div class="navbar-header">\n          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">\n            <span class="icon-bar"></span>\n            <span class="icon-bar"></span>\n            <span class="icon-bar"></span>\n          </button>\n          <a class="navbar-brand" href="#">OwnPass</a>\n        </div>\n        <div class="navbar-collapse collapse">\n          <ul class="nav navbar-nav">\n            <li class="active"><a href="#">Passwords</a></li> \n            <li ><a href="javascript:var e = document.createElement(\'script\');e.setAttribute(\'language\', \'javascript\');e.setAttribute(\'src\', \'http://localhost:3333/bookmarklet.js\');window.email=\'',l={hash:{},inverse:f.noop,fn:f.program(1,o,i),data:i},(a=n.withUser)?a=a.call(e,l):(a=e.withUser,a=typeof a===c?a.apply(e):a),n.withUser||(a=h.call(e,a,l)),(a||0===a)&&(u+=a),u+="';window.api='",l={hash:{},inverse:f.noop,fn:f.program(3,s,i),data:i},(a=n.withWindow)?a=a.call(e,l):(a=e.withWindow,a=typeof a===c?a.apply(e):a),n.withWindow||(a=h.call(e,a,l)),(a||0===a)&&(u+=a),u+='\';document.body.appendChild(e);void(0);">Bookmarklet</a></li> \n            \n          </ul>\n          <ul class="nav navbar-nav navbar-right">\n            <li><a href="https://github.com/KarlKode/OwnPass-Server"><i class="fa fa-github"></i> Github Server</a></li> \n            <li><a href="https://github.com/KarlKode/OwnPass-Web"><i class="fa fa-github"></i> Github Client</a></li> \n          </ul>\n        </div><!--/.nav-collapse -->\n\n'
-});"function"==typeof define&&define.amd?define([],function(){return r}):"object"==typeof n&&n&&n.exports&&(n.exports=r)}),require.register("views/home/templates/home",function(t,e,n){var r=Handlebars.template(function(t,e,n,r,i){return this.compilerInfo=[4,">= 1.0.0"],n=this.merge(n,t.helpers),i=i||{},' <div class="jumbotron">\n        <h1>Navbar example</h1>\n        <p>This example is a quick exercise to illustrate how the default, static navbar and fixed to top navbar work. It includes the responsive CSS and HTML, so it also adapts to your viewport and device.</p>\n        <p>\n          <a class="btn btn-lg btn-primary" href="../../components/#navbar">View navbar docs &raquo;</a>\n        </p>\n      </div>\n'});"function"==typeof define&&define.amd?define([],function(){return r}):"object"==typeof n&&n&&n.exports&&(n.exports=r)}),require.register("views/login-view",function(t,e,n){var r,i,o,s,a={}.hasOwnProperty,l=function(t,e){function n(){this.constructor=t}for(var r in e)a.call(e,r)&&(t[r]=e[r]);return n.prototype=e.prototype,t.prototype=new n,t.__super__=e.prototype,t};o=e("views/base/view"),i=e("lib/utils"),n.exports=r=function(t){function n(){return s=n.__super__.constructor.apply(this,arguments)}return l(n,t),n.prototype.autoRender=!0,n.prototype.className="home-page",n.prototype.template=e("./templates/login"),n.prototype.initialize=function(){return n.__super__.initialize.apply(this,arguments),this.delegate("click",".login",this.login)},n.prototype.login=function(t){var e;return t.preventDefault(),$(t.target).button("loading"),e={email:this.$el.find(".email").val(),password:i.hash_password(this.$el.find(".email").val(),this.$el.find(".password").val()),plainpw:this.$el.find(".password").val()},$.ajax({url:"https://ownpass.marcg.ch/users",beforeSend:function(t){return t.setRequestHeader("Authorization","Basic "+btoa(e.email+":"+e.password))}}).done(function(){return window.user=e,Chaplin.helpers.redirectTo("password#index",{})}).always(function(){return $(t.target).button("reset")})},n}(o)}),require.register("views/password-edit-view",function(t,e,n){var r,i,o,s,a={}.hasOwnProperty,l=function(t,e){function n(){this.constructor=t}for(var r in e)a.call(e,r)&&(t[r]=e[r]);return n.prototype=e.prototype,t.prototype=new n,t.__super__=e.prototype,t};o=e("views/base/view"),i=e("lib/utils"),n.exports=r=function(t){function n(){return s=n.__super__.constructor.apply(this,arguments)}return l(n,t),n.prototype.template=e("./templates/password-edit"),n.prototype.autoRender=!0,n.prototype.events={"click .cancel":"cancel","click .delete":"delete","click .save":"save"},n.prototype.getTemplateData=function(){var t,e;return e=this.model.toJSON(),null!=e.username&&(e.username=i.decrypt(e.username)),null!=e.password&&(e.password=i.decrypt(e.password)),null!=e.site&&(t=$("<a>",{href:e.site})[0],e.domain=t.hostname),e},n.prototype.save=function(t){var e,n,r;return t.preventDefault(),r=this,e=$(t.target).closest("button"),e.button("loading"),n={site:this.$el.find(".site").val(),phone:this.$el.find(".phone").val(),username:i.encrypt(this.$el.find(".username").val()),password:i.encrypt(this.$el.find(".password").val())},this.model.unset("new"),this.model.save(n).done(function(){return r.ok=!0,r.model.fetch(),r.cancel()}).always(function(){return e.button("reset")})},n.prototype.cancel=function(){return this.trigger("dispose"),this.dispose()},n.prototype["delete"]=function(){return this.model.destroy(),this.trigger("remove")},n}(o)}),require.register("views/password-view",function(t,e,n){var r,i,o,s,a,l=function(t,e){return function(){return t.apply(e,arguments)}},u={}.hasOwnProperty,c=function(t,e){function n(){this.constructor=t}for(var r in e)u.call(e,r)&&(t[r]=e[r]);return n.prototype=e.prototype,t.prototype=new n,t.__super__=e.prototype,t};s=e("views/base/view"),r=e("views/password-edit-view"),o=e("lib/utils"),n.exports=i=function(t){function n(){return this.editPassword=l(this.editPassword,this),a=n.__super__.constructor.apply(this,arguments)}return c(n,t),n.prototype.container="body",n.prototype.className="password_row",n.prototype.autoRender=!0,n.prototype.autoAttach=!1,n.prototype.template=e("./templates/password"),n.prototype.events={"click .edit":"editPassword"},n.prototype.initialize=function(){return n.__super__.initialize.apply(this,arguments),console.log(this.model.toJSON())},n.prototype.getTemplateData=function(){var t,e;return e=this.model.toJSON(),null!=e.username&&(e.username=o.decrypt(e.username)),null!=e.password&&(e.password=o.decrypt(e.password)),null!=e.site&&(t=$("<a>",{href:e.site})[0],e.domain=t.hostname),e},n.prototype.editPassword=function(){var t,e,n=this;return e=this,t=function(){var t,i;return t=$("<div>"),n.$el.html(""),n.$el.append(t),i=new r({model:n.model,container:t}),i.on("remove",n.dispose),void 0===n.model.get("new")?i.on("dispose",e.render):i.on("dispose",function(){return e.model.isNew()||e.model.isNew()?e.dispose():e.render()}),n.subview("editPasswordForm",i)},t()},n}(s)}),require.register("views/passwords-view",function(t,e,n){var r,i,o,s,a,l={}.hasOwnProperty,u=function(t,e){function n(){this.constructor=t}for(var r in e)l.call(e,r)&&(t[r]=e[r]);return n.prototype=e.prototype,t.prototype=new n,t.__super__=e.prototype,t};r=e("views/base/collection-view"),i=e("views/password-view"),o=e("models/password"),n.exports=s=function(t){function n(){return a=n.__super__.constructor.apply(this,arguments)}return u(n,t),n.prototype.container="body",n.prototype.listSelector=".collection",n.prototype.autoRender=!1,n.prototype.itemView=i,n.prototype.template=e("./templates/passwords"),n.prototype.events={"click .add":"addPassword"},n.prototype.addPassword=function(){var t;return t=new i({model:new o({"new":!0})}),t.render(),this.$el.find(".collection").prepend(t.el),t.editPassword()},n}(r)}),require.register("views/register-view",function(t,e,n){var r,i,o,s,a,l={}.hasOwnProperty,u=function(t,e){function n(){this.constructor=t}for(var r in e)l.call(e,r)&&(t[r]=e[r]);return n.prototype=e.prototype,t.prototype=new n,t.__super__=e.prototype,t};s=e("views/base/view"),i=e("models/user"),o=e("lib/utils"),n.exports=r=function(t){function n(){return a=n.__super__.constructor.apply(this,arguments)}return u(n,t),n.prototype.autoRender=!0,n.prototype.className="home-page",n.prototype.template=e("./templates/register"),n.prototype.initialize=function(){return n.__super__.initialize.apply(this,arguments),this.delegate("click",".register",this.login)},n.prototype.login=function(t){var e,n,r,s;return t.preventDefault(),this.$el.find(".password").val()!==this.$el.find(".repassword").val()?(alertify.error("Password do not match"),void 0):($(t.target).button("loading"),e=this.$el.find(".password").val(),s={email:this.$el.find(".email").val(),password:o.hash_password(this.$el.find(".email").val(),this.$el.find(".password").val())},r=new i(s),n=this,r.save().done(function(){return s.plainpw=e,window.user=s,Chaplin.helpers.redirectTo("password#index",{})}).always(function(){return $(t.target).button("reset")}))},n}(s)}),require.register("views/site-view",function(t,e,n){var r,i,o,s={}.hasOwnProperty,a=function(t,e){function n(){this.constructor=t}for(var r in e)s.call(e,r)&&(t[r]=e[r]);return n.prototype=e.prototype,t.prototype=new n,t.__super__=e.prototype,t};i=e("views/base/view"),n.exports=r=function(t){function n(){return o=n.__super__.constructor.apply(this,arguments)}return a(n,t),n.prototype.container="body",n.prototype.id="site-container",n.prototype.regions={header:"#header-container",main:"#page-container"},n.prototype.template=e("./templates/site"),n}(i)}),require.register("views/templates/authorize",function(t,e,n){var r=Handlebars.template(function(t,e,n,r,i){return this.compilerInfo=[4,">= 1.0.0"],n=this.merge(n,t.helpers),i=i||{},' <form class="form-signin">\n 	<div class="logocontainer">\n 	<i class="fa logo fa-unlock"></i>\n </div>\n        <h2 class="form-signin-heading">Whitelist device</h2>\n        <input type="text" class="form-control auth" placeholder="Authorization code" autofocus>\n         \n        <button class="btn btn-lg btn-primary btn-block authorize" type="submit">Authorize</button>\n        <p><a href="/" class="btn btn-link">Back to login</a></p>\n      </form>\n'});"function"==typeof define&&define.amd?define([],function(){return r}):"object"==typeof n&&n&&n.exports&&(n.exports=r)}),require.register("views/templates/login",function(t,e,n){var r=Handlebars.template(function(t,e,n,r,i){return this.compilerInfo=[4,">= 1.0.0"],n=this.merge(n,t.helpers),i=i||{},' <form class="form-signin">\n 	<div class="logocontainer">\n 	<i class="fa logo fa-key"></i>\n </div>\n        <h2 class="form-signin-heading">Please sign in</h2>\n        <input type="text" class="form-control email" placeholder="Email address" autofocus>\n        <input type="password" class="form-control password" placeholder="Password">\n        <label class="checkbox">\n          <input type="checkbox" value="remember-me"> Remember me\n        </label>\n        <button class="btn btn-lg btn-primary btn-block login" type="submit">Sign in</button>\n        <p>Do not have an account yet? <a href="/register" class="btn btn-link">Register here</a></p>\n      </form>\n'});"function"==typeof define&&define.amd?define([],function(){return r}):"object"==typeof n&&n&&n.exports&&(n.exports=r)}),require.register("views/templates/password-edit",function(t,e,n){var r=Handlebars.template(function(t,e,n,r,i){function o(){return'\n  <a class="btn btn-danger delete"><i class="fa fa-trash-o"></i> Delete</a>\n  '}this.compilerInfo=[4,">= 1.0.0"],n=this.merge(n,t.helpers),i=i||{};var s,a,l="",u="function",c=this.escapeExpression,p=this,f=n.blockHelperMissing;return l+='\n<form class="form-inline" role="form">\n  <div class="form-group">\n    <label class="sr-only" for="exampleInputEmail2">Url</label>\n    <input type="text" class="form-control site" id="exampleInputEmail2" placeholder="Url" value="',(s=n.site)?s=s.call(e,{hash:{},data:i}):(s=e.site,s=typeof s===u?s.apply(e):s),l+=c(s)+'">\n  </div>\n  <div class="form-group">\n    <label class="sr-only" for="exampleInputEmail2">Username</label>\n    <input type="text" class="form-control username" id="exampleInputEmail2" placeholder="Enter username" value="',(s=n.username)?s=s.call(e,{hash:{},data:i}):(s=e.username,s=typeof s===u?s.apply(e):s),l+=c(s)+'">\n  </div>\n  <div class="form-group">\n    <label class="sr-only" for="exampleInputPassword2">Password</label>\n    <input type="password" class="form-control password" id="exampleInputPassword2" placeholder="Password" value="',(s=n.password)?s=s.call(e,{hash:{},data:i}):(s=e.password,s=typeof s===u?s.apply(e):s),l+=c(s)+'">\n  </div> \n  <div class=" pull-right">\n  <button type="submit" class="btn btn-primary save"> <i class="fa fa-save"></i> Store</button>\n  ',a={hash:{},inverse:p.program(1,o,i),fn:p.noop,data:i},(s=n["new"])?s=s.call(e,a):(s=e["new"],s=typeof s===u?s.apply(e):s),n["new"]||(s=f.call(e,s,a)),(s||0===s)&&(l+=s),l+='\n  <a class="btn btn-default cancel"><i class="fa fa-undo"></i> Cancel</a>\n</div>\n</form>'});"function"==typeof define&&define.amd?define([],function(){return r}):"object"==typeof n&&n&&n.exports&&(n.exports=r)}),require.register("views/templates/password",function(t,e,n){var r=Handlebars.template(function(t,e,n,r,i){this.compilerInfo=[4,">= 1.0.0"],n=this.merge(n,t.helpers),i=i||{};var o,s="",a="function",l=this.escapeExpression;return s+='<a class="btn btn-default pull-right edit"><i class="fa fa-pencil"></i> Edit </a>\n<h2><img src="http://g.etfv.co/',(o=n.site)?o=o.call(e,{hash:{},data:i}):(o=e.site,o=typeof o===a?o.apply(e):o),s+=l(o)+'" /> ',(o=n.domain)?o=o.call(e,{hash:{},data:i}):(o=e.domain,o=typeof o===a?o.apply(e):o),s+=l(o)+"</h2>"});"function"==typeof define&&define.amd?define([],function(){return r}):"object"==typeof n&&n&&n.exports&&(n.exports=r)}),require.register("views/templates/passwords",function(t,e,n){var r=Handlebars.template(function(t,e,n,r,i){return this.compilerInfo=[4,">= 1.0.0"],n=this.merge(n,t.helpers),i=i||{},'<a class="btn btn-default pull-right add"><i class="fa fa-plus"></i> Add new password </a><h2>Passwords</h2>\n<div class="collection"></div>'});"function"==typeof define&&define.amd?define([],function(){return r}):"object"==typeof n&&n&&n.exports&&(n.exports=r)}),require.register("views/templates/register",function(t,e,n){var r=Handlebars.template(function(t,e,n,r,i){return this.compilerInfo=[4,">= 1.0.0"],n=this.merge(n,t.helpers),i=i||{},' <form class="form-signin">\n 	<div class="logocontainer">\n 	<i class="fa logo fa-user"></i>\n </div>\n        <h2 class="form-signin-heading">Register</h2>\n        <input type="text" class="form-control email" placeholder="Email address" autofocus>\n        <input type="password" class="form-control middle password" placeholder="Password"> \n        <input type="password" class="form-control middle repassword" placeholder="Repeat Password"> \n        <input type="text" class="form-control phone" placeholder="Phone nr" >\n        <button class="btn btn-lg btn-primary btn-block register" type="submit">Register</button>\n        <p>You alread have an account? <a href="/" class="btn btn-link">Login here</a></p>\n      </form>\n'});"function"==typeof define&&define.amd?define([],function(){return r}):"object"==typeof n&&n&&n.exports&&(n.exports=r)}),require.register("views/templates/site",function(t,e,n){var r=Handlebars.template(function(t,e,n,r,i){return this.compilerInfo=[4,">= 1.0.0"],n=this.merge(n,t.helpers),i=i||{},' <div class="container">\n<div class="header-container" id="header-container"></div>\n\n<div class="outer-page-container">\n  <div class="page-container" id="page-container">\n  </div>\n</div>\n</div>\n'});"function"==typeof define&&define.amd?define([],function(){return r}):"object"==typeof n&&n&&n.exports&&(n.exports=r)});
+(function(/*! Brunch !*/) {
+  'use strict';
+
+  var globals = typeof window !== 'undefined' ? window : global;
+  if (typeof globals.require === 'function') return;
+
+  var modules = {};
+  var cache = {};
+
+  var has = function(object, name) {
+    return ({}).hasOwnProperty.call(object, name);
+  };
+
+  var expand = function(root, name) {
+    var results = [], parts, part;
+    if (/^\.\.?(\/|$)/.test(name)) {
+      parts = [root, name].join('/').split('/');
+    } else {
+      parts = name.split('/');
+    }
+    for (var i = 0, length = parts.length; i < length; i++) {
+      part = parts[i];
+      if (part === '..') {
+        results.pop();
+      } else if (part !== '.' && part !== '') {
+        results.push(part);
+      }
+    }
+    return results.join('/');
+  };
+
+  var dirname = function(path) {
+    return path.split('/').slice(0, -1).join('/');
+  };
+
+  var localRequire = function(path) {
+    return function(name) {
+      var dir = dirname(path);
+      var absolute = expand(dir, name);
+      return globals.require(absolute, path);
+    };
+  };
+
+  var initModule = function(name, definition) {
+    var module = {id: name, exports: {}};
+    cache[name] = module;
+    definition(module.exports, localRequire(name), module);
+    return module.exports;
+  };
+
+  var require = function(name, loaderPath) {
+    var path = expand(name, '.');
+    if (loaderPath == null) loaderPath = '/';
+
+    if (has(cache, path)) return cache[path].exports;
+    if (has(modules, path)) return initModule(path, modules[path]);
+
+    var dirIndex = expand(path, './index');
+    if (has(cache, dirIndex)) return cache[dirIndex].exports;
+    if (has(modules, dirIndex)) return initModule(dirIndex, modules[dirIndex]);
+
+    throw new Error('Cannot find module "' + name + '" from '+ '"' + loaderPath + '"');
+  };
+
+  var define = function(bundle, fn) {
+    if (typeof bundle === 'object') {
+      for (var key in bundle) {
+        if (has(bundle, key)) {
+          modules[key] = bundle[key];
+        }
+      }
+    } else {
+      modules[bundle] = fn;
+    }
+  };
+
+  var list = function() {
+    var result = [];
+    for (var item in modules) {
+      if (has(modules, item)) {
+        result.push(item);
+      }
+    }
+    return result;
+  };
+
+  globals.require = require;
+  globals.require.define = define;
+  globals.require.register = define;
+  globals.require.list = list;
+  globals.require.brunch = true;
+})();
+require.register("application", function(exports, require, module) {
+var Application, _ref,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+module.exports = Application = (function(_super) {
+  __extends(Application, _super);
+
+  function Application() {
+    _ref = Application.__super__.constructor.apply(this, arguments);
+    return _ref;
+  }
+
+  return Application;
+
+})(Chaplin.Application);
+});
+
+;require.register("controllers/base/appcontroller", function(exports, require, module) {
+var Controller, HeaderView, HomeController, _ref,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+Controller = require('controllers/base/controller');
+
+HeaderView = require('views/home/header-view');
+
+module.exports = HomeController = (function(_super) {
+  __extends(HomeController, _super);
+
+  function HomeController() {
+    _ref = HomeController.__super__.constructor.apply(this, arguments);
+    return _ref;
+  }
+
+  HomeController.prototype.beforeAction = function() {
+    HomeController.__super__.beforeAction.apply(this, arguments);
+    return this.compose('header', HeaderView, {
+      region: 'header'
+    });
+  };
+
+  return HomeController;
+
+})(Controller);
+});
+
+;require.register("controllers/base/controller", function(exports, require, module) {
+var Controller, SiteView, _ref,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+SiteView = require('views/site-view');
+
+module.exports = Controller = (function(_super) {
+  __extends(Controller, _super);
+
+  function Controller() {
+    _ref = Controller.__super__.constructor.apply(this, arguments);
+    return _ref;
+  }
+
+  Controller.prototype.beforeAction = function() {
+    return this.compose('site', SiteView);
+  };
+
+  return Controller;
+
+})(Chaplin.Controller);
+});
+
+;require.register("controllers/devices-controller", function(exports, require, module) {
+var Controller, DevicesController, _ref,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+Controller = require('controllers/base/controller');
+
+module.exports = DevicesController = (function(_super) {
+  __extends(DevicesController, _super);
+
+  function DevicesController() {
+    _ref = DevicesController.__super__.constructor.apply(this, arguments);
+    return _ref;
+  }
+
+  return DevicesController;
+
+})(Controller);
+});
+
+;require.register("controllers/home-controller", function(exports, require, module) {
+var AppController, HeaderView, HomeController, HomePageView, _ref,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+AppController = require('controllers/base/appcontroller');
+
+HeaderView = require('views/home/header-view');
+
+HomePageView = require('views/home/home-page-view');
+
+module.exports = HomeController = (function(_super) {
+  __extends(HomeController, _super);
+
+  function HomeController() {
+    _ref = HomeController.__super__.constructor.apply(this, arguments);
+    return _ref;
+  }
+
+  HomeController.prototype.index = function() {
+    return this.view = new HomePageView({
+      region: 'main'
+    });
+  };
+
+  return HomeController;
+
+})(AppController);
+});
+
+;require.register("controllers/locations-controller", function(exports, require, module) {
+var AppController, Collection, Location, LocationView, LocationsController, LocationsView, _ref,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+AppController = require('controllers/base/appcontroller');
+
+LocationsView = require('views/locations-view');
+
+LocationView = require('views/location-view');
+
+Collection = require('models/base/collection');
+
+Location = require('models/location');
+
+module.exports = LocationsController = (function(_super) {
+  __extends(LocationsController, _super);
+
+  function LocationsController() {
+    _ref = LocationsController.__super__.constructor.apply(this, arguments);
+    return _ref;
+  }
+
+  LocationsController.prototype.index = function() {
+    this.locations = new Collection(null, {
+      model: Location
+    });
+    this.locations.url = "" + window.api + "locations";
+    this.view = new LocationsView({
+      collection: this.locations,
+      region: 'main'
+    });
+    this.view.render;
+    return this.locations.fetch();
+  };
+
+  return LocationsController;
+
+})(AppController);
+});
+
+;require.register("controllers/login-controller", function(exports, require, module) {
+var AuthorizeView, Controller, LoginView, LoginsController, RegisterView, _ref,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+Controller = require('controllers/base/controller');
+
+LoginView = require('views/login-view');
+
+RegisterView = require('views/register-view');
+
+AuthorizeView = require('views/authorize-view');
+
+module.exports = LoginsController = (function(_super) {
+  __extends(LoginsController, _super);
+
+  function LoginsController() {
+    _ref = LoginsController.__super__.constructor.apply(this, arguments);
+    return _ref;
+  }
+
+  LoginsController.prototype.index = function() {
+    return this.view = new LoginView({
+      region: 'main'
+    });
+  };
+
+  LoginsController.prototype.register = function() {
+    return this.view = new RegisterView({
+      region: 'main'
+    });
+  };
+
+  LoginsController.prototype.authorize = function(opts) {
+    return this.view = new AuthorizeView({
+      devid: opts.devid,
+      devhash: opts.devhash,
+      region: 'main'
+    });
+  };
+
+  return LoginsController;
+
+})(Controller);
+});
+
+;require.register("controllers/password-controller", function(exports, require, module) {
+var AppController, Collection, Password, PasswordView, PasswordsController, PasswordsView, _ref,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+AppController = require('controllers/base/appcontroller');
+
+PasswordsView = require('views/passwords-view');
+
+PasswordView = require('views/password-view');
+
+Collection = require('models/base/collection');
+
+Password = require('models/password');
+
+module.exports = PasswordsController = (function(_super) {
+  __extends(PasswordsController, _super);
+
+  function PasswordsController() {
+    _ref = PasswordsController.__super__.constructor.apply(this, arguments);
+    return _ref;
+  }
+
+  PasswordsController.prototype.index = function() {
+    this.passwords = new Collection(null, {
+      model: Password
+    });
+    this.passwords.url = "" + window.api + "passwords";
+    this.view = new PasswordsView({
+      collection: this.passwords,
+      region: 'main'
+    });
+    this.view.render();
+    return this.passwords.fetch();
+  };
+
+  PasswordsController.prototype.edit = function(id) {
+    return this.view = new PasswordView({
+      region: 'main'
+    });
+  };
+
+  PasswordsController.prototype.edit = function(id) {
+    return this.view = new PasswordView({
+      region: 'main'
+    });
+  };
+
+  return PasswordsController;
+
+})(AppController);
+});
+
+;require.register("controllers/user-controller", function(exports, require, module) {
+var AppController, UsersController, _ref,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+AppController = require('controllers/base/appcontroller');
+
+module.exports = UsersController = (function(_super) {
+  __extends(UsersController, _super);
+
+  function UsersController() {
+    _ref = UsersController.__super__.constructor.apply(this, arguments);
+    return _ref;
+  }
+
+  return UsersController;
+
+})(AppController);
+});
+
+;require.register("initialize", function(exports, require, module) {
+var Application, routes;
+
+Application = require('application');
+
+routes = require('routes');
+
+window.api = "https://ownpass.marcg.ch/";
+
+$(function() {
+  $.ajaxSetup({
+    beforeSend: function(xhr) {
+      if (window.user != null) {
+        return xhr.setRequestHeader("Authorization", "Basic " + btoa(window.user.email + ":" + window.user.password));
+      }
+    },
+    statusCode: {
+      401: function(xhr) {
+        var json;
+        json = $.parseJSON(xhr.responseText);
+        if ((json.id != null) && (json.device != null)) {
+          Chaplin.helpers.redirectTo('login#authorize', {
+            devid: json.id,
+            devhash: json.device
+          });
+          return;
+        }
+        alertify.error(json.message);
+        return Chaplin.helpers.redirectTo('login#index', {});
+      },
+      403: function(xhr) {
+        alertify.error("Invalid resource");
+        return Chaplin.helpers.redirectTo('login#index', {});
+      },
+      404: function(xhr) {
+        var json;
+        json = $.parseJSON(xhr.responseText);
+        return alertify.error(json.message);
+      },
+      406: function(xhr) {
+        return alertify.error("Please fill out the form");
+      },
+      409: function(xhr) {
+        return alertify.error("User name taken");
+      },
+      500: function(xhr) {
+        alertify.error("OOPPSSS! Some thing unexpected happened!");
+        return Chaplin.helpers.redirectTo('login#index', {});
+      }
+    }
+  });
+  return new Application({
+    title: 'OwnPass',
+    pushState: false,
+    controllerSuffix: '-controller',
+    routes: routes
+  });
+});
+});
+
+;require.register("lib/cryptojs", function(exports, require, module) {
+var CryptoJS=CryptoJS||function(h,s){var f={},t=f.lib={},g=function(){},j=t.Base={extend:function(a){g.prototype=this;var c=new g;a&&c.mixIn(a);c.hasOwnProperty("init")||(c.init=function(){c.$super.init.apply(this,arguments)});c.init.prototype=c;c.$super=this;return c},create:function(){var a=this.extend();a.init.apply(a,arguments);return a},init:function(){},mixIn:function(a){for(var c in a)a.hasOwnProperty(c)&&(this[c]=a[c]);a.hasOwnProperty("toString")&&(this.toString=a.toString)},clone:function(){return this.init.prototype.extend(this)}},
+q=t.WordArray=j.extend({init:function(a,c){a=this.words=a||[];this.sigBytes=c!=s?c:4*a.length},toString:function(a){return(a||u).stringify(this)},concat:function(a){var c=this.words,d=a.words,b=this.sigBytes;a=a.sigBytes;this.clamp();if(b%4)for(var e=0;e<a;e++)c[b+e>>>2]|=(d[e>>>2]>>>24-8*(e%4)&255)<<24-8*((b+e)%4);else if(65535<d.length)for(e=0;e<a;e+=4)c[b+e>>>2]=d[e>>>2];else c.push.apply(c,d);this.sigBytes+=a;return this},clamp:function(){var a=this.words,c=this.sigBytes;a[c>>>2]&=4294967295<<
+32-8*(c%4);a.length=h.ceil(c/4)},clone:function(){var a=j.clone.call(this);a.words=this.words.slice(0);return a},random:function(a){for(var c=[],d=0;d<a;d+=4)c.push(4294967296*h.random()|0);return new q.init(c,a)}}),v=f.enc={},u=v.Hex={stringify:function(a){var c=a.words;a=a.sigBytes;for(var d=[],b=0;b<a;b++){var e=c[b>>>2]>>>24-8*(b%4)&255;d.push((e>>>4).toString(16));d.push((e&15).toString(16))}return d.join("")},parse:function(a){for(var c=a.length,d=[],b=0;b<c;b+=2)d[b>>>3]|=parseInt(a.substr(b,
+2),16)<<24-4*(b%8);return new q.init(d,c/2)}},k=v.Latin1={stringify:function(a){var c=a.words;a=a.sigBytes;for(var d=[],b=0;b<a;b++)d.push(String.fromCharCode(c[b>>>2]>>>24-8*(b%4)&255));return d.join("")},parse:function(a){for(var c=a.length,d=[],b=0;b<c;b++)d[b>>>2]|=(a.charCodeAt(b)&255)<<24-8*(b%4);return new q.init(d,c)}},l=v.Utf8={stringify:function(a){try{return decodeURIComponent(escape(k.stringify(a)))}catch(c){throw Error("Malformed UTF-8 data");}},parse:function(a){return k.parse(unescape(encodeURIComponent(a)))}},
+x=t.BufferedBlockAlgorithm=j.extend({reset:function(){this._data=new q.init;this._nDataBytes=0},_append:function(a){"string"==typeof a&&(a=l.parse(a));this._data.concat(a);this._nDataBytes+=a.sigBytes},_process:function(a){var c=this._data,d=c.words,b=c.sigBytes,e=this.blockSize,f=b/(4*e),f=a?h.ceil(f):h.max((f|0)-this._minBufferSize,0);a=f*e;b=h.min(4*a,b);if(a){for(var m=0;m<a;m+=e)this._doProcessBlock(d,m);m=d.splice(0,a);c.sigBytes-=b}return new q.init(m,b)},clone:function(){var a=j.clone.call(this);
+a._data=this._data.clone();return a},_minBufferSize:0});t.Hasher=x.extend({cfg:j.extend(),init:function(a){this.cfg=this.cfg.extend(a);this.reset()},reset:function(){x.reset.call(this);this._doReset()},update:function(a){this._append(a);this._process();return this},finalize:function(a){a&&this._append(a);return this._doFinalize()},blockSize:16,_createHelper:function(a){return function(c,d){return(new a.init(d)).finalize(c)}},_createHmacHelper:function(a){return function(c,d){return(new w.HMAC.init(a,
+d)).finalize(c)}}});var w=f.algo={};return f}(Math);
+(function(h){for(var s=CryptoJS,f=s.lib,t=f.WordArray,g=f.Hasher,f=s.algo,j=[],q=[],v=function(a){return 4294967296*(a-(a|0))|0},u=2,k=0;64>k;){var l;a:{l=u;for(var x=h.sqrt(l),w=2;w<=x;w++)if(!(l%w)){l=!1;break a}l=!0}l&&(8>k&&(j[k]=v(h.pow(u,0.5))),q[k]=v(h.pow(u,1/3)),k++);u++}var a=[],f=f.SHA256=g.extend({_doReset:function(){this._hash=new t.init(j.slice(0))},_doProcessBlock:function(c,d){for(var b=this._hash.words,e=b[0],f=b[1],m=b[2],h=b[3],p=b[4],j=b[5],k=b[6],l=b[7],n=0;64>n;n++){if(16>n)a[n]=
+c[d+n]|0;else{var r=a[n-15],g=a[n-2];a[n]=((r<<25|r>>>7)^(r<<14|r>>>18)^r>>>3)+a[n-7]+((g<<15|g>>>17)^(g<<13|g>>>19)^g>>>10)+a[n-16]}r=l+((p<<26|p>>>6)^(p<<21|p>>>11)^(p<<7|p>>>25))+(p&j^~p&k)+q[n]+a[n];g=((e<<30|e>>>2)^(e<<19|e>>>13)^(e<<10|e>>>22))+(e&f^e&m^f&m);l=k;k=j;j=p;p=h+r|0;h=m;m=f;f=e;e=r+g|0}b[0]=b[0]+e|0;b[1]=b[1]+f|0;b[2]=b[2]+m|0;b[3]=b[3]+h|0;b[4]=b[4]+p|0;b[5]=b[5]+j|0;b[6]=b[6]+k|0;b[7]=b[7]+l|0},_doFinalize:function(){var a=this._data,d=a.words,b=8*this._nDataBytes,e=8*a.sigBytes;
+d[e>>>5]|=128<<24-e%32;d[(e+64>>>9<<4)+14]=h.floor(b/4294967296);d[(e+64>>>9<<4)+15]=b;a.sigBytes=4*d.length;this._process();return this._hash},clone:function(){var a=g.clone.call(this);a._hash=this._hash.clone();return a}});s.SHA256=g._createHelper(f);s.HmacSHA256=g._createHmacHelper(f)})(Math);
+/*
+CryptoJS v3.1.2
+code.google.com/p/crypto-js
+(c) 2009-2013 by Jeff Mott. All rights reserved.
+code.google.com/p/crypto-js/wiki/License
+*/
+(function(){var h=CryptoJS,j=h.lib.WordArray;h.enc.Base64={stringify:function(b){var e=b.words,f=b.sigBytes,c=this._map;b.clamp();b=[];for(var a=0;a<f;a+=3)for(var d=(e[a>>>2]>>>24-8*(a%4)&255)<<16|(e[a+1>>>2]>>>24-8*((a+1)%4)&255)<<8|e[a+2>>>2]>>>24-8*((a+2)%4)&255,g=0;4>g&&a+0.75*g<f;g++)b.push(c.charAt(d>>>6*(3-g)&63));if(e=c.charAt(64))for(;b.length%4;)b.push(e);return b.join("")},parse:function(b){var e=b.length,f=this._map,c=f.charAt(64);c&&(c=b.indexOf(c),-1!=c&&(e=c));for(var c=[],a=0,d=0;d<
+e;d++)if(d%4){var g=f.indexOf(b.charAt(d-1))<<2*(d%4),h=f.indexOf(b.charAt(d))>>>6-2*(d%4);c[a>>>2]|=(g|h)<<24-8*(a%4);a++}return j.create(c,a)},_map:"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/="}})();
+/*
+CryptoJS v3.1.2
+code.google.com/p/crypto-js
+(c) 2009-2013 by Jeff Mott. All rights reserved.
+code.google.com/p/crypto-js/wiki/License
+*/
+var CryptoJS=CryptoJS||function(u,p){var d={},l=d.lib={},s=function(){},t=l.Base={extend:function(a){s.prototype=this;var c=new s;a&&c.mixIn(a);c.hasOwnProperty("init")||(c.init=function(){c.$super.init.apply(this,arguments)});c.init.prototype=c;c.$super=this;return c},create:function(){var a=this.extend();a.init.apply(a,arguments);return a},init:function(){},mixIn:function(a){for(var c in a)a.hasOwnProperty(c)&&(this[c]=a[c]);a.hasOwnProperty("toString")&&(this.toString=a.toString)},clone:function(){return this.init.prototype.extend(this)}},
+r=l.WordArray=t.extend({init:function(a,c){a=this.words=a||[];this.sigBytes=c!=p?c:4*a.length},toString:function(a){return(a||v).stringify(this)},concat:function(a){var c=this.words,e=a.words,j=this.sigBytes;a=a.sigBytes;this.clamp();if(j%4)for(var k=0;k<a;k++)c[j+k>>>2]|=(e[k>>>2]>>>24-8*(k%4)&255)<<24-8*((j+k)%4);else if(65535<e.length)for(k=0;k<a;k+=4)c[j+k>>>2]=e[k>>>2];else c.push.apply(c,e);this.sigBytes+=a;return this},clamp:function(){var a=this.words,c=this.sigBytes;a[c>>>2]&=4294967295<<
+32-8*(c%4);a.length=u.ceil(c/4)},clone:function(){var a=t.clone.call(this);a.words=this.words.slice(0);return a},random:function(a){for(var c=[],e=0;e<a;e+=4)c.push(4294967296*u.random()|0);return new r.init(c,a)}}),w=d.enc={},v=w.Hex={stringify:function(a){var c=a.words;a=a.sigBytes;for(var e=[],j=0;j<a;j++){var k=c[j>>>2]>>>24-8*(j%4)&255;e.push((k>>>4).toString(16));e.push((k&15).toString(16))}return e.join("")},parse:function(a){for(var c=a.length,e=[],j=0;j<c;j+=2)e[j>>>3]|=parseInt(a.substr(j,
+2),16)<<24-4*(j%8);return new r.init(e,c/2)}},b=w.Latin1={stringify:function(a){var c=a.words;a=a.sigBytes;for(var e=[],j=0;j<a;j++)e.push(String.fromCharCode(c[j>>>2]>>>24-8*(j%4)&255));return e.join("")},parse:function(a){for(var c=a.length,e=[],j=0;j<c;j++)e[j>>>2]|=(a.charCodeAt(j)&255)<<24-8*(j%4);return new r.init(e,c)}},x=w.Utf8={stringify:function(a){try{return decodeURIComponent(escape(b.stringify(a)))}catch(c){throw Error("Malformed UTF-8 data");}},parse:function(a){return b.parse(unescape(encodeURIComponent(a)))}},
+q=l.BufferedBlockAlgorithm=t.extend({reset:function(){this._data=new r.init;this._nDataBytes=0},_append:function(a){"string"==typeof a&&(a=x.parse(a));this._data.concat(a);this._nDataBytes+=a.sigBytes},_process:function(a){var c=this._data,e=c.words,j=c.sigBytes,k=this.blockSize,b=j/(4*k),b=a?u.ceil(b):u.max((b|0)-this._minBufferSize,0);a=b*k;j=u.min(4*a,j);if(a){for(var q=0;q<a;q+=k)this._doProcessBlock(e,q);q=e.splice(0,a);c.sigBytes-=j}return new r.init(q,j)},clone:function(){var a=t.clone.call(this);
+a._data=this._data.clone();return a},_minBufferSize:0});l.Hasher=q.extend({cfg:t.extend(),init:function(a){this.cfg=this.cfg.extend(a);this.reset()},reset:function(){q.reset.call(this);this._doReset()},update:function(a){this._append(a);this._process();return this},finalize:function(a){a&&this._append(a);return this._doFinalize()},blockSize:16,_createHelper:function(a){return function(b,e){return(new a.init(e)).finalize(b)}},_createHmacHelper:function(a){return function(b,e){return(new n.HMAC.init(a,
+e)).finalize(b)}}});var n=d.algo={};return d}(Math);
+(function(){var u=CryptoJS,p=u.lib.WordArray;u.enc.Base64={stringify:function(d){var l=d.words,p=d.sigBytes,t=this._map;d.clamp();d=[];for(var r=0;r<p;r+=3)for(var w=(l[r>>>2]>>>24-8*(r%4)&255)<<16|(l[r+1>>>2]>>>24-8*((r+1)%4)&255)<<8|l[r+2>>>2]>>>24-8*((r+2)%4)&255,v=0;4>v&&r+0.75*v<p;v++)d.push(t.charAt(w>>>6*(3-v)&63));if(l=t.charAt(64))for(;d.length%4;)d.push(l);return d.join("")},parse:function(d){var l=d.length,s=this._map,t=s.charAt(64);t&&(t=d.indexOf(t),-1!=t&&(l=t));for(var t=[],r=0,w=0;w<
+l;w++)if(w%4){var v=s.indexOf(d.charAt(w-1))<<2*(w%4),b=s.indexOf(d.charAt(w))>>>6-2*(w%4);t[r>>>2]|=(v|b)<<24-8*(r%4);r++}return p.create(t,r)},_map:"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/="}})();
+(function(u){function p(b,n,a,c,e,j,k){b=b+(n&a|~n&c)+e+k;return(b<<j|b>>>32-j)+n}function d(b,n,a,c,e,j,k){b=b+(n&c|a&~c)+e+k;return(b<<j|b>>>32-j)+n}function l(b,n,a,c,e,j,k){b=b+(n^a^c)+e+k;return(b<<j|b>>>32-j)+n}function s(b,n,a,c,e,j,k){b=b+(a^(n|~c))+e+k;return(b<<j|b>>>32-j)+n}for(var t=CryptoJS,r=t.lib,w=r.WordArray,v=r.Hasher,r=t.algo,b=[],x=0;64>x;x++)b[x]=4294967296*u.abs(u.sin(x+1))|0;r=r.MD5=v.extend({_doReset:function(){this._hash=new w.init([1732584193,4023233417,2562383102,271733878])},
+_doProcessBlock:function(q,n){for(var a=0;16>a;a++){var c=n+a,e=q[c];q[c]=(e<<8|e>>>24)&16711935|(e<<24|e>>>8)&4278255360}var a=this._hash.words,c=q[n+0],e=q[n+1],j=q[n+2],k=q[n+3],z=q[n+4],r=q[n+5],t=q[n+6],w=q[n+7],v=q[n+8],A=q[n+9],B=q[n+10],C=q[n+11],u=q[n+12],D=q[n+13],E=q[n+14],x=q[n+15],f=a[0],m=a[1],g=a[2],h=a[3],f=p(f,m,g,h,c,7,b[0]),h=p(h,f,m,g,e,12,b[1]),g=p(g,h,f,m,j,17,b[2]),m=p(m,g,h,f,k,22,b[3]),f=p(f,m,g,h,z,7,b[4]),h=p(h,f,m,g,r,12,b[5]),g=p(g,h,f,m,t,17,b[6]),m=p(m,g,h,f,w,22,b[7]),
+f=p(f,m,g,h,v,7,b[8]),h=p(h,f,m,g,A,12,b[9]),g=p(g,h,f,m,B,17,b[10]),m=p(m,g,h,f,C,22,b[11]),f=p(f,m,g,h,u,7,b[12]),h=p(h,f,m,g,D,12,b[13]),g=p(g,h,f,m,E,17,b[14]),m=p(m,g,h,f,x,22,b[15]),f=d(f,m,g,h,e,5,b[16]),h=d(h,f,m,g,t,9,b[17]),g=d(g,h,f,m,C,14,b[18]),m=d(m,g,h,f,c,20,b[19]),f=d(f,m,g,h,r,5,b[20]),h=d(h,f,m,g,B,9,b[21]),g=d(g,h,f,m,x,14,b[22]),m=d(m,g,h,f,z,20,b[23]),f=d(f,m,g,h,A,5,b[24]),h=d(h,f,m,g,E,9,b[25]),g=d(g,h,f,m,k,14,b[26]),m=d(m,g,h,f,v,20,b[27]),f=d(f,m,g,h,D,5,b[28]),h=d(h,f,
+m,g,j,9,b[29]),g=d(g,h,f,m,w,14,b[30]),m=d(m,g,h,f,u,20,b[31]),f=l(f,m,g,h,r,4,b[32]),h=l(h,f,m,g,v,11,b[33]),g=l(g,h,f,m,C,16,b[34]),m=l(m,g,h,f,E,23,b[35]),f=l(f,m,g,h,e,4,b[36]),h=l(h,f,m,g,z,11,b[37]),g=l(g,h,f,m,w,16,b[38]),m=l(m,g,h,f,B,23,b[39]),f=l(f,m,g,h,D,4,b[40]),h=l(h,f,m,g,c,11,b[41]),g=l(g,h,f,m,k,16,b[42]),m=l(m,g,h,f,t,23,b[43]),f=l(f,m,g,h,A,4,b[44]),h=l(h,f,m,g,u,11,b[45]),g=l(g,h,f,m,x,16,b[46]),m=l(m,g,h,f,j,23,b[47]),f=s(f,m,g,h,c,6,b[48]),h=s(h,f,m,g,w,10,b[49]),g=s(g,h,f,m,
+E,15,b[50]),m=s(m,g,h,f,r,21,b[51]),f=s(f,m,g,h,u,6,b[52]),h=s(h,f,m,g,k,10,b[53]),g=s(g,h,f,m,B,15,b[54]),m=s(m,g,h,f,e,21,b[55]),f=s(f,m,g,h,v,6,b[56]),h=s(h,f,m,g,x,10,b[57]),g=s(g,h,f,m,t,15,b[58]),m=s(m,g,h,f,D,21,b[59]),f=s(f,m,g,h,z,6,b[60]),h=s(h,f,m,g,C,10,b[61]),g=s(g,h,f,m,j,15,b[62]),m=s(m,g,h,f,A,21,b[63]);a[0]=a[0]+f|0;a[1]=a[1]+m|0;a[2]=a[2]+g|0;a[3]=a[3]+h|0},_doFinalize:function(){var b=this._data,n=b.words,a=8*this._nDataBytes,c=8*b.sigBytes;n[c>>>5]|=128<<24-c%32;var e=u.floor(a/
+4294967296);n[(c+64>>>9<<4)+15]=(e<<8|e>>>24)&16711935|(e<<24|e>>>8)&4278255360;n[(c+64>>>9<<4)+14]=(a<<8|a>>>24)&16711935|(a<<24|a>>>8)&4278255360;b.sigBytes=4*(n.length+1);this._process();b=this._hash;n=b.words;for(a=0;4>a;a++)c=n[a],n[a]=(c<<8|c>>>24)&16711935|(c<<24|c>>>8)&4278255360;return b},clone:function(){var b=v.clone.call(this);b._hash=this._hash.clone();return b}});t.MD5=v._createHelper(r);t.HmacMD5=v._createHmacHelper(r)})(Math);
+(function(){var u=CryptoJS,p=u.lib,d=p.Base,l=p.WordArray,p=u.algo,s=p.EvpKDF=d.extend({cfg:d.extend({keySize:4,hasher:p.MD5,iterations:1}),init:function(d){this.cfg=this.cfg.extend(d)},compute:function(d,r){for(var p=this.cfg,s=p.hasher.create(),b=l.create(),u=b.words,q=p.keySize,p=p.iterations;u.length<q;){n&&s.update(n);var n=s.update(d).finalize(r);s.reset();for(var a=1;a<p;a++)n=s.finalize(n),s.reset();b.concat(n)}b.sigBytes=4*q;return b}});u.EvpKDF=function(d,l,p){return s.create(p).compute(d,
+l)}})();
+CryptoJS.lib.Cipher||function(u){var p=CryptoJS,d=p.lib,l=d.Base,s=d.WordArray,t=d.BufferedBlockAlgorithm,r=p.enc.Base64,w=p.algo.EvpKDF,v=d.Cipher=t.extend({cfg:l.extend(),createEncryptor:function(e,a){return this.create(this._ENC_XFORM_MODE,e,a)},createDecryptor:function(e,a){return this.create(this._DEC_XFORM_MODE,e,a)},init:function(e,a,b){this.cfg=this.cfg.extend(b);this._xformMode=e;this._key=a;this.reset()},reset:function(){t.reset.call(this);this._doReset()},process:function(e){this._append(e);return this._process()},
+finalize:function(e){e&&this._append(e);return this._doFinalize()},keySize:4,ivSize:4,_ENC_XFORM_MODE:1,_DEC_XFORM_MODE:2,_createHelper:function(e){return{encrypt:function(b,k,d){return("string"==typeof k?c:a).encrypt(e,b,k,d)},decrypt:function(b,k,d){return("string"==typeof k?c:a).decrypt(e,b,k,d)}}}});d.StreamCipher=v.extend({_doFinalize:function(){return this._process(!0)},blockSize:1});var b=p.mode={},x=function(e,a,b){var c=this._iv;c?this._iv=u:c=this._prevBlock;for(var d=0;d<b;d++)e[a+d]^=
+c[d]},q=(d.BlockCipherMode=l.extend({createEncryptor:function(e,a){return this.Encryptor.create(e,a)},createDecryptor:function(e,a){return this.Decryptor.create(e,a)},init:function(e,a){this._cipher=e;this._iv=a}})).extend();q.Encryptor=q.extend({processBlock:function(e,a){var b=this._cipher,c=b.blockSize;x.call(this,e,a,c);b.encryptBlock(e,a);this._prevBlock=e.slice(a,a+c)}});q.Decryptor=q.extend({processBlock:function(e,a){var b=this._cipher,c=b.blockSize,d=e.slice(a,a+c);b.decryptBlock(e,a);x.call(this,
+e,a,c);this._prevBlock=d}});b=b.CBC=q;q=(p.pad={}).Pkcs7={pad:function(a,b){for(var c=4*b,c=c-a.sigBytes%c,d=c<<24|c<<16|c<<8|c,l=[],n=0;n<c;n+=4)l.push(d);c=s.create(l,c);a.concat(c)},unpad:function(a){a.sigBytes-=a.words[a.sigBytes-1>>>2]&255}};d.BlockCipher=v.extend({cfg:v.cfg.extend({mode:b,padding:q}),reset:function(){v.reset.call(this);var a=this.cfg,b=a.iv,a=a.mode;if(this._xformMode==this._ENC_XFORM_MODE)var c=a.createEncryptor;else c=a.createDecryptor,this._minBufferSize=1;this._mode=c.call(a,
+this,b&&b.words)},_doProcessBlock:function(a,b){this._mode.processBlock(a,b)},_doFinalize:function(){var a=this.cfg.padding;if(this._xformMode==this._ENC_XFORM_MODE){a.pad(this._data,this.blockSize);var b=this._process(!0)}else b=this._process(!0),a.unpad(b);return b},blockSize:4});var n=d.CipherParams=l.extend({init:function(a){this.mixIn(a)},toString:function(a){return(a||this.formatter).stringify(this)}}),b=(p.format={}).OpenSSL={stringify:function(a){var b=a.ciphertext;a=a.salt;return(a?s.create([1398893684,
+1701076831]).concat(a).concat(b):b).toString(r)},parse:function(a){a=r.parse(a);var b=a.words;if(1398893684==b[0]&&1701076831==b[1]){var c=s.create(b.slice(2,4));b.splice(0,4);a.sigBytes-=16}return n.create({ciphertext:a,salt:c})}},a=d.SerializableCipher=l.extend({cfg:l.extend({format:b}),encrypt:function(a,b,c,d){d=this.cfg.extend(d);var l=a.createEncryptor(c,d);b=l.finalize(b);l=l.cfg;return n.create({ciphertext:b,key:c,iv:l.iv,algorithm:a,mode:l.mode,padding:l.padding,blockSize:a.blockSize,formatter:d.format})},
+decrypt:function(a,b,c,d){d=this.cfg.extend(d);b=this._parse(b,d.format);return a.createDecryptor(c,d).finalize(b.ciphertext)},_parse:function(a,b){return"string"==typeof a?b.parse(a,this):a}}),p=(p.kdf={}).OpenSSL={execute:function(a,b,c,d){d||(d=s.random(8));a=w.create({keySize:b+c}).compute(a,d);c=s.create(a.words.slice(b),4*c);a.sigBytes=4*b;return n.create({key:a,iv:c,salt:d})}},c=d.PasswordBasedCipher=a.extend({cfg:a.cfg.extend({kdf:p}),encrypt:function(b,c,d,l){l=this.cfg.extend(l);d=l.kdf.execute(d,
+b.keySize,b.ivSize);l.iv=d.iv;b=a.encrypt.call(this,b,c,d.key,l);b.mixIn(d);return b},decrypt:function(b,c,d,l){l=this.cfg.extend(l);c=this._parse(c,l.format);d=l.kdf.execute(d,b.keySize,b.ivSize,c.salt);l.iv=d.iv;return a.decrypt.call(this,b,c,d.key,l)}})}();
+(function(){for(var u=CryptoJS,p=u.lib.BlockCipher,d=u.algo,l=[],s=[],t=[],r=[],w=[],v=[],b=[],x=[],q=[],n=[],a=[],c=0;256>c;c++)a[c]=128>c?c<<1:c<<1^283;for(var e=0,j=0,c=0;256>c;c++){var k=j^j<<1^j<<2^j<<3^j<<4,k=k>>>8^k&255^99;l[e]=k;s[k]=e;var z=a[e],F=a[z],G=a[F],y=257*a[k]^16843008*k;t[e]=y<<24|y>>>8;r[e]=y<<16|y>>>16;w[e]=y<<8|y>>>24;v[e]=y;y=16843009*G^65537*F^257*z^16843008*e;b[k]=y<<24|y>>>8;x[k]=y<<16|y>>>16;q[k]=y<<8|y>>>24;n[k]=y;e?(e=z^a[a[a[G^z]]],j^=a[a[j]]):e=j=1}var H=[0,1,2,4,8,
+16,32,64,128,27,54],d=d.AES=p.extend({_doReset:function(){for(var a=this._key,c=a.words,d=a.sigBytes/4,a=4*((this._nRounds=d+6)+1),e=this._keySchedule=[],j=0;j<a;j++)if(j<d)e[j]=c[j];else{var k=e[j-1];j%d?6<d&&4==j%d&&(k=l[k>>>24]<<24|l[k>>>16&255]<<16|l[k>>>8&255]<<8|l[k&255]):(k=k<<8|k>>>24,k=l[k>>>24]<<24|l[k>>>16&255]<<16|l[k>>>8&255]<<8|l[k&255],k^=H[j/d|0]<<24);e[j]=e[j-d]^k}c=this._invKeySchedule=[];for(d=0;d<a;d++)j=a-d,k=d%4?e[j]:e[j-4],c[d]=4>d||4>=j?k:b[l[k>>>24]]^x[l[k>>>16&255]]^q[l[k>>>
+8&255]]^n[l[k&255]]},encryptBlock:function(a,b){this._doCryptBlock(a,b,this._keySchedule,t,r,w,v,l)},decryptBlock:function(a,c){var d=a[c+1];a[c+1]=a[c+3];a[c+3]=d;this._doCryptBlock(a,c,this._invKeySchedule,b,x,q,n,s);d=a[c+1];a[c+1]=a[c+3];a[c+3]=d},_doCryptBlock:function(a,b,c,d,e,j,l,f){for(var m=this._nRounds,g=a[b]^c[0],h=a[b+1]^c[1],k=a[b+2]^c[2],n=a[b+3]^c[3],p=4,r=1;r<m;r++)var q=d[g>>>24]^e[h>>>16&255]^j[k>>>8&255]^l[n&255]^c[p++],s=d[h>>>24]^e[k>>>16&255]^j[n>>>8&255]^l[g&255]^c[p++],t=
+d[k>>>24]^e[n>>>16&255]^j[g>>>8&255]^l[h&255]^c[p++],n=d[n>>>24]^e[g>>>16&255]^j[h>>>8&255]^l[k&255]^c[p++],g=q,h=s,k=t;q=(f[g>>>24]<<24|f[h>>>16&255]<<16|f[k>>>8&255]<<8|f[n&255])^c[p++];s=(f[h>>>24]<<24|f[k>>>16&255]<<16|f[n>>>8&255]<<8|f[g&255])^c[p++];t=(f[k>>>24]<<24|f[n>>>16&255]<<16|f[g>>>8&255]<<8|f[h&255])^c[p++];n=(f[n>>>24]<<24|f[g>>>16&255]<<16|f[h>>>8&255]<<8|f[k&255])^c[p++];a[b]=q;a[b+1]=s;a[b+2]=t;a[b+3]=n},keySize:8});u.AES=p._createHelper(d)})();
+module.exports = CryptoJS
+});
+
+;require.register("lib/utils", function(exports, require, module) {
+var CryptoJS, utils;
+
+utils = Chaplin.utils.beget(Chaplin.utils);
+
+CryptoJS = require('lib/cryptojs');
+
+_(utils).extend({
+  hash_password: function(email, pw) {
+    return CryptoJS.SHA256(pw).toString(CryptoJS.enc.Base64);
+  },
+  get_secret: function() {
+    return CryptoJS.SHA256(window.user.plainpw).toString(CryptoJS.enc.Base64);
+  },
+  get_iv: function() {
+    return CryptoJS.SHA256(window.user.plainpw).toString(CryptoJS.enc.Base64);
+  },
+  encrypt: function(message) {
+    var cr;
+    cr = CryptoJS.AES.encrypt(message, utils.get_secret());
+    return cr.iv.toString(CryptoJS.enc.Base64) + ":" + cr.salt.toString(CryptoJS.enc.Base64) + ":" + cr.ciphertext.toString(CryptoJS.enc.Base64);
+  },
+  decrypt: function(message) {
+    var parts;
+    parts = message.split(":");
+    return CryptoJS.AES.decrypt(CryptoJS.lib.CipherParams.create({
+      iv: CryptoJS.enc.Base64.parse(parts[0]),
+      ciphertext: CryptoJS.enc.Base64.parse(parts[2]),
+      salt: CryptoJS.enc.Base64.parse(parts[1])
+    }), utils.get_secret()).toString(CryptoJS.enc.Utf8);
+  }
+});
+
+if (typeof Object.seal === "function") {
+  Object.seal(utils);
+}
+
+module.exports = utils;
+});
+
+;require.register("lib/view-helper", function(exports, require, module) {
+var register,
+  __slice = [].slice;
+
+register = function(name, fn) {
+  return Handlebars.registerHelper(name, fn);
+};
+
+register('with', function(context, fn) {
+  if (!context || Handlebars.Utils.isEmpty(context)) {
+    return options.inverse(this);
+  } else {
+    return options.fn(context);
+  }
+});
+
+register('withUser', function(context, fn) {
+  return context.fn(window.user || {
+    email: ""
+  });
+});
+
+register('withWindow', function(context, fn) {
+  return context.fn(window);
+});
+
+register('without', function(context, options) {
+  var inverse;
+  inverse = options.inverse;
+  options.inverse = options.fn;
+  options.fn = inverse;
+  return Handlebars.helpers["with"].call(this, context, options);
+});
+
+register('url', function() {
+  var options, params, routeName, _i;
+  routeName = arguments[0], params = 3 <= arguments.length ? __slice.call(arguments, 1, _i = arguments.length - 1) : (_i = 1, []), options = arguments[_i++];
+  return Chaplin.helpers.reverse(routeName, params);
+});
+});
+
+;require.register("mediator", function(exports, require, module) {
+var mediator;
+
+mediator = module.exports = Chaplin.mediator;
+});
+
+;require.register("models/base/collection", function(exports, require, module) {
+var Collection, Model, _ref,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+Model = require('./model');
+
+module.exports = Collection = (function(_super) {
+  __extends(Collection, _super);
+
+  function Collection() {
+    _ref = Collection.__super__.constructor.apply(this, arguments);
+    return _ref;
+  }
+
+  Collection.prototype.model = Model;
+
+  return Collection;
+
+})(Chaplin.Collection);
+});
+
+;require.register("models/base/model", function(exports, require, module) {
+var Model, _ref,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+module.exports = Model = (function(_super) {
+  __extends(Model, _super);
+
+  function Model() {
+    _ref = Model.__super__.constructor.apply(this, arguments);
+    return _ref;
+  }
+
+  Model.prototype.idAttribute = "id";
+
+  return Model;
+
+})(Chaplin.Model);
+});
+
+;require.register("models/devices", function(exports, require, module) {
+var Devices, Model, _ref,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+Model = require('/models/base/model');
+
+module.exports = Devices = (function(_super) {
+  __extends(Devices, _super);
+
+  function Devices() {
+    _ref = Devices.__super__.constructor.apply(this, arguments);
+    return _ref;
+  }
+
+  return Devices;
+
+})(Model);
+});
+
+;require.register("models/location", function(exports, require, module) {
+var Location, Model, _ref,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+Model = require('/models/base/model');
+
+module.exports = Location = (function(_super) {
+  __extends(Location, _super);
+
+  function Location() {
+    _ref = Location.__super__.constructor.apply(this, arguments);
+    return _ref;
+  }
+
+  Location.prototype.urlRoot = "https://ownpass.marcg.ch/logins";
+
+  return Location;
+
+})(Model);
+});
+
+;require.register("models/password", function(exports, require, module) {
+var Model, Password, _ref,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+Model = require('/models/base/model');
+
+module.exports = Password = (function(_super) {
+  __extends(Password, _super);
+
+  function Password() {
+    _ref = Password.__super__.constructor.apply(this, arguments);
+    return _ref;
+  }
+
+  Password.prototype.urlRoot = "https://ownpass.marcg.ch/passwords";
+
+  return Password;
+
+})(Model);
+});
+
+;require.register("models/user", function(exports, require, module) {
+var Model, User, Utils, _ref,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+Model = require('/models/base/model');
+
+Utils = require('lib/utils');
+
+module.exports = User = (function(_super) {
+  __extends(User, _super);
+
+  function User() {
+    _ref = User.__super__.constructor.apply(this, arguments);
+    return _ref;
+  }
+
+  User.prototype.urlRoot = "" + window.api + "users";
+
+  return User;
+
+})(Model);
+});
+
+;require.register("routes", function(exports, require, module) {
+module.exports = function(match) {
+  match('', 'login#index');
+  match('register', 'login#register');
+  match('authorize/:devid/:devhash', 'login#authorize');
+  match('passwords', 'password#index');
+  match('passwords/:id', 'password#edit');
+  return match('locations', 'locations#index');
+};
+});
+
+;require.register("views/authorize-view", function(exports, require, module) {
+var AuthorizeView, View, _ref,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+View = require('views/base/view');
+
+module.exports = AuthorizeView = (function(_super) {
+  __extends(AuthorizeView, _super);
+
+  function AuthorizeView() {
+    _ref = AuthorizeView.__super__.constructor.apply(this, arguments);
+    return _ref;
+  }
+
+  AuthorizeView.prototype.autoRender = true;
+
+  AuthorizeView.prototype.className = 'home-page';
+
+  AuthorizeView.prototype.template = require('./templates/authorize');
+
+  AuthorizeView.prototype.initialize = function(options) {
+    AuthorizeView.__super__.initialize.apply(this, arguments);
+    this.devid = options.devid;
+    this.devhash = options.devhash;
+    return this.delegate('click', '.authorize', this.authorize);
+  };
+
+  AuthorizeView.prototype.authorize = function(e) {
+    var _this = this;
+    e.preventDefault();
+    $(e.target).button("loading");
+    return $.ajax({
+      method: 'PUT',
+      data: JSON.stringify({
+        device: this.devhash,
+        active: true,
+        code: this.$el.find('.auth').val()
+      }),
+      contentType: "application/json; charset=utf-8",
+      url: "https://ownpass.marcg.ch/devices/" + this.devid
+    }).done(function(response) {
+      return Chaplin.helpers.redirectTo('login#index', {});
+    }).always(function(response) {
+      return $(e.target).button("reset");
+    });
+  };
+
+  return AuthorizeView;
+
+})(View);
+});
+
+;require.register("views/base/collection-view", function(exports, require, module) {
+var CollectionView, View, _ref,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+View = require('./view');
+
+module.exports = CollectionView = (function(_super) {
+  __extends(CollectionView, _super);
+
+  function CollectionView() {
+    _ref = CollectionView.__super__.constructor.apply(this, arguments);
+    return _ref;
+  }
+
+  CollectionView.prototype.getTemplateFunction = View.prototype.getTemplateFunction;
+
+  return CollectionView;
+
+})(Chaplin.CollectionView);
+});
+
+;require.register("views/base/view", function(exports, require, module) {
+var View, _ref,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+require('lib/view-helper');
+
+module.exports = View = (function(_super) {
+  __extends(View, _super);
+
+  function View() {
+    _ref = View.__super__.constructor.apply(this, arguments);
+    return _ref;
+  }
+
+  View.prototype.optionNames = Chaplin.View.prototype.optionNames.concat(['template']);
+
+  View.prototype.getTemplateFunction = function() {
+    return this.template;
+  };
+
+  return View;
+
+})(Chaplin.View);
+});
+
+;require.register("views/devices-view", function(exports, require, module) {
+var DevicesView, View, _ref,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+View = require('views/base/view');
+
+module.exports = DevicesView = (function(_super) {
+  __extends(DevicesView, _super);
+
+  function DevicesView() {
+    _ref = DevicesView.__super__.constructor.apply(this, arguments);
+    return _ref;
+  }
+
+  DevicesView.prototype.template = require('./templates/devices');
+
+  return DevicesView;
+
+})(View);
+});
+
+;require.register("views/home/header-view", function(exports, require, module) {
+var HeaderView, View, _ref,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+View = require('views/base/view');
+
+module.exports = HeaderView = (function(_super) {
+  __extends(HeaderView, _super);
+
+  function HeaderView() {
+    _ref = HeaderView.__super__.constructor.apply(this, arguments);
+    return _ref;
+  }
+
+  HeaderView.prototype.autoRender = true;
+
+  HeaderView.prototype.className = 'navbar navbar-default';
+
+  HeaderView.prototype.tagName = 'header';
+
+  HeaderView.prototype.template = require('./templates/header');
+
+  return HeaderView;
+
+})(View);
+});
+
+;require.register("views/home/home-page-view", function(exports, require, module) {
+var HomePageView, View, _ref,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+View = require('views/base/view');
+
+module.exports = HomePageView = (function(_super) {
+  __extends(HomePageView, _super);
+
+  function HomePageView() {
+    _ref = HomePageView.__super__.constructor.apply(this, arguments);
+    return _ref;
+  }
+
+  HomePageView.prototype.autoRender = true;
+
+  HomePageView.prototype.className = 'home-page';
+
+  HomePageView.prototype.template = require('./templates/home');
+
+  return HomePageView;
+
+})(View);
+});
+
+;require.register("views/home/templates/header", function(exports, require, module) {
+var __templateData = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
+  var buffer = "", stack1, options, functionType="function", escapeExpression=this.escapeExpression, self=this, blockHelperMissing=helpers.blockHelperMissing;
+
+function program1(depth0,data) {
+  
+  var stack1;
+  if (stack1 = helpers.email) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.email; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  return escapeExpression(stack1);
+  }
+
+function program3(depth0,data) {
+  
+  var stack1;
+  if (stack1 = helpers.api) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.api; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  return escapeExpression(stack1);
+  }
+
+  buffer += "\n        <div class=\"navbar-header\">\n          <button type=\"button\" class=\"navbar-toggle\" data-toggle=\"collapse\" data-target=\".navbar-collapse\">\n            <span class=\"icon-bar\"></span>\n            <span class=\"icon-bar\"></span>\n            <span class=\"icon-bar\"></span>\n          </button>\n          <a class=\"navbar-brand\" href=\"#\">OwnPass</a>\n        </div>\n        <div class=\"navbar-collapse collapse\">\n          <ul class=\"nav navbar-nav\">\n            <li class=\"active\"><a href=\"#\">Passwords</a></li> \n            <li ><a href=\"javascript:var e = document.createElement('script');e.setAttribute('language', 'javascript');e.setAttribute('src', 'http://localhost:3333/bookmarklet.js');window.email='";
+  options = {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data};
+  if (stack1 = helpers.withUser) { stack1 = stack1.call(depth0, options); }
+  else { stack1 = depth0.withUser; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  if (!helpers.withUser) { stack1 = blockHelperMissing.call(depth0, stack1, options); }
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "';window.api='";
+  options = {hash:{},inverse:self.noop,fn:self.program(3, program3, data),data:data};
+  if (stack1 = helpers.withWindow) { stack1 = stack1.call(depth0, options); }
+  else { stack1 = depth0.withWindow; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  if (!helpers.withWindow) { stack1 = blockHelperMissing.call(depth0, stack1, options); }
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "';document.body.appendChild(e);void(0);\">Bookmarklet</a></li> \n            \n          </ul>\n          <ul class=\"nav navbar-nav navbar-right\">\n            <li><a href=\"https://github.com/KarlKode/OwnPass-Server\"><i class=\"fa fa-github\"></i> Github Server</a></li> \n            <li><a href=\"https://github.com/KarlKode/OwnPass-Web\"><i class=\"fa fa-github\"></i> Github Client</a></li> \n          </ul>\n        </div><!--/.nav-collapse -->\n\n";
+  return buffer;
+  });
+if (typeof define === 'function' && define.amd) {
+  define([], function() {
+    return __templateData;
+  });
+} else if (typeof module === 'object' && module && module.exports) {
+  module.exports = __templateData;
+} else {
+  __templateData;
+}
+});
+
+;require.register("views/home/templates/home", function(exports, require, module) {
+var __templateData = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
+  
+
+
+  return " <div class=\"jumbotron\">\n        <h1>Navbar example</h1>\n        <p>This example is a quick exercise to illustrate how the default, static navbar and fixed to top navbar work. It includes the responsive CSS and HTML, so it also adapts to your viewport and device.</p>\n        <p>\n          <a class=\"btn btn-lg btn-primary\" href=\"../../components/#navbar\">View navbar docs &raquo;</a>\n        </p>\n      </div>\n";
+  });
+if (typeof define === 'function' && define.amd) {
+  define([], function() {
+    return __templateData;
+  });
+} else if (typeof module === 'object' && module && module.exports) {
+  module.exports = __templateData;
+} else {
+  __templateData;
+}
+});
+
+;require.register("views/location-view", function(exports, require, module) {
+var LocationView, View, _ref,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+View = require('views/base/view');
+
+module.exports = LocationView = (function(_super) {
+  __extends(LocationView, _super);
+
+  function LocationView() {
+    _ref = LocationView.__super__.constructor.apply(this, arguments);
+    return _ref;
+  }
+
+  LocationView.prototype.container = 'body';
+
+  LocationView.prototype.className = 'location_row';
+
+  LocationView.prototype.autoRender = true;
+
+  LocationView.prototype.autoAttach = false;
+
+  LocationView.prototype.template = require('./templates/location');
+
+  return LocationView;
+
+})(View);
+});
+
+;require.register("views/locations-view", function(exports, require, module) {
+var CollectionView, Location, LocationModel, LocationsView, _ref,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+CollectionView = require('views/base/collection-view');
+
+Location = require('views/location-view');
+
+LocationModel = require('models/location');
+
+module.exports = LocationsView = (function(_super) {
+  __extends(LocationsView, _super);
+
+  function LocationsView() {
+    _ref = LocationsView.__super__.constructor.apply(this, arguments);
+    return _ref;
+  }
+
+  LocationsView.prototype.container = 'body';
+
+  LocationsView.prototype.listSelector = '.collection';
+
+  LocationsView.prototype.autoRender = false;
+
+  LocationsView.prototype.itemView = Location;
+
+  LocationsView.prototype.template = require('./templates/locations');
+
+  return LocationsView;
+
+})(CollectionView);
+});
+
+;require.register("views/login-view", function(exports, require, module) {
+var LoginView, Utils, View, _ref,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+View = require('views/base/view');
+
+Utils = require('lib/utils');
+
+module.exports = LoginView = (function(_super) {
+  __extends(LoginView, _super);
+
+  function LoginView() {
+    _ref = LoginView.__super__.constructor.apply(this, arguments);
+    return _ref;
+  }
+
+  LoginView.prototype.autoRender = true;
+
+  LoginView.prototype.className = 'home-page';
+
+  LoginView.prototype.template = require('./templates/login');
+
+  LoginView.prototype.initialize = function(options) {
+    LoginView.__super__.initialize.apply(this, arguments);
+    return this.delegate('click', '.login', this.login);
+  };
+
+  LoginView.prototype.login = function(e) {
+    var userdata,
+      _this = this;
+    e.preventDefault();
+    $(e.target).button("loading");
+    userdata = {
+      email: this.$el.find('.email').val(),
+      password: Utils.hash_password(this.$el.find('.email').val(), this.$el.find('.password').val()),
+      plainpw: this.$el.find('.password').val()
+    };
+    return $.ajax({
+      url: "https://ownpass.marcg.ch/users",
+      beforeSend: function(xhr) {
+        return xhr.setRequestHeader("Authorization", "Basic " + btoa(userdata.email + ":" + userdata.password));
+      }
+    }).done(function(response) {
+      window.user = userdata;
+      return Chaplin.helpers.redirectTo('password#index', {});
+    }).always(function(response) {
+      return $(e.target).button("reset");
+    });
+  };
+
+  return LoginView;
+
+})(View);
+});
+
+;require.register("views/password-edit-view", function(exports, require, module) {
+var PasswordEditView, Utils, View, _ref,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+View = require('views/base/view');
+
+Utils = require('lib/utils');
+
+module.exports = PasswordEditView = (function(_super) {
+  __extends(PasswordEditView, _super);
+
+  function PasswordEditView() {
+    _ref = PasswordEditView.__super__.constructor.apply(this, arguments);
+    return _ref;
+  }
+
+  PasswordEditView.prototype.template = require('./templates/password-edit');
+
+  PasswordEditView.prototype.autoRender = true;
+
+  PasswordEditView.prototype.events = {
+    'click .cancel': 'cancel',
+    'click .delete': 'delete',
+    'click .save': 'save'
+  };
+
+  PasswordEditView.prototype.getTemplateData = function() {
+    var a, data;
+    data = this.model.toJSON();
+    if (data.username != null) {
+      data.username = Utils.decrypt(data.username);
+    }
+    if (data.password != null) {
+      data.password = Utils.decrypt(data.password);
+    }
+    if (data.site != null) {
+      a = $('<a>', {
+        href: data.site
+      })[0];
+      data.domain = a.hostname;
+    }
+    return data;
+  };
+
+  PasswordEditView.prototype.save = function(e) {
+    var btn, data, self,
+      _this = this;
+    e.preventDefault();
+    self = this;
+    btn = $(e.target).closest('button');
+    btn.button("loading");
+    data = {
+      site: this.$el.find('.site').val(),
+      phone: this.$el.find('.phone').val(),
+      username: Utils.encrypt(this.$el.find('.username').val()),
+      password: Utils.encrypt(this.$el.find('.password').val())
+    };
+    this.model.unset('new');
+    return this.model.save(data).done(function(response) {
+      self.ok = true;
+      self.model.fetch();
+      return self.cancel();
+    }).always(function(response) {
+      return btn.button("reset");
+    });
+  };
+
+  PasswordEditView.prototype.cancel = function() {
+    this.trigger('dispose');
+    return this.dispose();
+  };
+
+  PasswordEditView.prototype["delete"] = function() {
+    this.model.destroy();
+    return this.trigger('remove');
+  };
+
+  return PasswordEditView;
+
+})(View);
+});
+
+;require.register("views/password-view", function(exports, require, module) {
+var EditPasswordView, PasswordView, Utils, View, _ref,
+  __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+View = require('views/base/view');
+
+EditPasswordView = require('views/password-edit-view');
+
+Utils = require('lib/utils');
+
+module.exports = PasswordView = (function(_super) {
+  __extends(PasswordView, _super);
+
+  function PasswordView() {
+    this.editPassword = __bind(this.editPassword, this);
+    _ref = PasswordView.__super__.constructor.apply(this, arguments);
+    return _ref;
+  }
+
+  PasswordView.prototype.container = 'body';
+
+  PasswordView.prototype.className = 'password_row';
+
+  PasswordView.prototype.autoRender = true;
+
+  PasswordView.prototype.autoAttach = false;
+
+  PasswordView.prototype.template = require('./templates/password');
+
+  PasswordView.prototype.events = {
+    'click .edit': 'editPassword'
+  };
+
+  PasswordView.prototype.initialize = function() {
+    PasswordView.__super__.initialize.apply(this, arguments);
+    return console.log(this.model.toJSON());
+  };
+
+  PasswordView.prototype.getTemplateData = function() {
+    var a, data;
+    data = this.model.toJSON();
+    if (data.username != null) {
+      data.username = Utils.decrypt(data.username);
+    }
+    if (data.password != null) {
+      data.password = Utils.decrypt(data.password);
+    }
+    if (data.site != null) {
+      a = $('<a>', {
+        href: data.site
+      })[0];
+      data.domain = a.hostname;
+    }
+    return data;
+  };
+
+  PasswordView.prototype.editPassword = function(event) {
+    var createNewPassword, self,
+      _this = this;
+    self = this;
+    createNewPassword = function() {
+      var container, editPassword;
+      container = $('<div>');
+      _this.$el.html("");
+      _this.$el.append(container);
+      editPassword = new EditPasswordView({
+        model: _this.model,
+        container: container
+      });
+      editPassword.on('remove', _this.dispose);
+      if (_this.model.get('new') === void 0) {
+        editPassword.on('dispose', self.render);
+      } else {
+        editPassword.on('dispose', function() {
+          if (!self.model.isNew() && !self.model.isNew()) {
+            return self.render();
+          } else {
+            return self.dispose();
+          }
+        });
+      }
+      return _this.subview('editPasswordForm', editPassword);
+    };
+    return createNewPassword();
+  };
+
+  return PasswordView;
+
+})(View);
+});
+
+;require.register("views/passwords-view", function(exports, require, module) {
+var CollectionView, Password, PasswordModel, PasswordsView, _ref,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+CollectionView = require('views/base/collection-view');
+
+Password = require('views/password-view');
+
+PasswordModel = require('models/password');
+
+module.exports = PasswordsView = (function(_super) {
+  __extends(PasswordsView, _super);
+
+  function PasswordsView() {
+    _ref = PasswordsView.__super__.constructor.apply(this, arguments);
+    return _ref;
+  }
+
+  PasswordsView.prototype.container = 'body';
+
+  PasswordsView.prototype.listSelector = '.collection';
+
+  PasswordsView.prototype.autoRender = false;
+
+  PasswordsView.prototype.itemView = Password;
+
+  PasswordsView.prototype.template = require('./templates/passwords');
+
+  PasswordsView.prototype.events = {
+    'click .add': 'addPassword'
+  };
+
+  PasswordsView.prototype.addPassword = function() {
+    var pwview;
+    pwview = new Password({
+      model: new PasswordModel({
+        'new': true
+      })
+    });
+    pwview.render();
+    this.$el.find('.collection').prepend(pwview.el);
+    return pwview.editPassword();
+  };
+
+  return PasswordsView;
+
+})(CollectionView);
+});
+
+;require.register("views/register-view", function(exports, require, module) {
+var RegisterView, User, Utils, View, _ref,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+View = require('views/base/view');
+
+User = require('models/user');
+
+Utils = require('lib/utils');
+
+module.exports = RegisterView = (function(_super) {
+  __extends(RegisterView, _super);
+
+  function RegisterView() {
+    _ref = RegisterView.__super__.constructor.apply(this, arguments);
+    return _ref;
+  }
+
+  RegisterView.prototype.autoRender = true;
+
+  RegisterView.prototype.className = 'home-page';
+
+  RegisterView.prototype.template = require('./templates/register');
+
+  RegisterView.prototype.initialize = function(options) {
+    RegisterView.__super__.initialize.apply(this, arguments);
+    return this.delegate('click', '.register', this.login);
+  };
+
+  RegisterView.prototype.login = function(e) {
+    var plainpw, self, user, userdata,
+      _this = this;
+    e.preventDefault();
+    if (this.$el.find('.password').val() !== this.$el.find('.repassword').val()) {
+      alertify.error("Password do not match");
+      return;
+    }
+    $(e.target).button("loading");
+    plainpw = this.$el.find('.password').val();
+    userdata = {
+      email: this.$el.find('.email').val(),
+      phone: this.$el.find('.phone').val(),
+      password: Utils.hash_password(this.$el.find('.email').val(), this.$el.find('.password').val())
+    };
+    user = new User(userdata);
+    self = this;
+    return user.save().done(function(response) {
+      userdata.plainpw = plainpw;
+      window.user = userdata;
+      return Chaplin.helpers.redirectTo('password#index', {});
+    }).always(function(response) {
+      return $(e.target).button("reset");
+    });
+  };
+
+  return RegisterView;
+
+})(View);
+});
+
+;require.register("views/site-view", function(exports, require, module) {
+var SiteView, View, _ref,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+View = require('views/base/view');
+
+module.exports = SiteView = (function(_super) {
+  __extends(SiteView, _super);
+
+  function SiteView() {
+    _ref = SiteView.__super__.constructor.apply(this, arguments);
+    return _ref;
+  }
+
+  SiteView.prototype.container = 'body';
+
+  SiteView.prototype.id = 'site-container';
+
+  SiteView.prototype.regions = {
+    header: '#header-container',
+    main: '#page-container'
+  };
+
+  SiteView.prototype.template = require('./templates/site');
+
+  return SiteView;
+
+})(View);
+});
+
+;require.register("views/templates/authorize", function(exports, require, module) {
+var __templateData = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
+  
+
+
+  return " <form class=\"form-signin\">\n 	<div class=\"logocontainer\">\n 	<i class=\"fa logo fa-unlock\"></i>\n </div>\n        <h2 class=\"form-signin-heading\">Whitelist device</h2>\n        <input type=\"text\" class=\"form-control auth\" placeholder=\"Authorization code\" autofocus>\n         \n        <button class=\"btn btn-lg btn-primary btn-block authorize\" type=\"submit\">Authorize</button>\n        <p><a href=\"/\" class=\"btn btn-link\">Back to login</a></p>\n      </form>\n";
+  });
+if (typeof define === 'function' && define.amd) {
+  define([], function() {
+    return __templateData;
+  });
+} else if (typeof module === 'object' && module && module.exports) {
+  module.exports = __templateData;
+} else {
+  __templateData;
+}
+});
+
+;require.register("views/templates/devices", function(exports, require, module) {
+var __templateData = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
+  var buffer = "";
+
+
+  return buffer;
+  });
+if (typeof define === 'function' && define.amd) {
+  define([], function() {
+    return __templateData;
+  });
+} else if (typeof module === 'object' && module && module.exports) {
+  module.exports = __templateData;
+} else {
+  __templateData;
+}
+});
+
+;require.register("views/templates/location", function(exports, require, module) {
+var __templateData = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
+  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
+
+
+  buffer += "<h2>";
+  if (stack1 = helpers.ip) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.ip; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
+    + "</h2>";
+  return buffer;
+  });
+if (typeof define === 'function' && define.amd) {
+  define([], function() {
+    return __templateData;
+  });
+} else if (typeof module === 'object' && module && module.exports) {
+  module.exports = __templateData;
+} else {
+  __templateData;
+}
+});
+
+;require.register("views/templates/locations", function(exports, require, module) {
+var __templateData = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
+  
+
+
+  return "<h2>Locations</h2>\n<div class=\"collection\"></div>";
+  });
+if (typeof define === 'function' && define.amd) {
+  define([], function() {
+    return __templateData;
+  });
+} else if (typeof module === 'object' && module && module.exports) {
+  module.exports = __templateData;
+} else {
+  __templateData;
+}
+});
+
+;require.register("views/templates/login", function(exports, require, module) {
+var __templateData = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
+  
+
+
+  return " <form class=\"form-signin\">\n 	<div class=\"logocontainer\">\n 	<i class=\"fa logo fa-key\"></i>\n </div>\n        <h2 class=\"form-signin-heading\">Please sign in</h2>\n        <input type=\"text\" class=\"form-control email\" placeholder=\"Email address\" autofocus>\n        <input type=\"password\" class=\"form-control password\" placeholder=\"Password\">\n        <label class=\"checkbox\">\n          <input type=\"checkbox\" value=\"remember-me\"> Remember me\n        </label>\n        <button class=\"btn btn-lg btn-primary btn-block login\" type=\"submit\">Sign in</button>\n        <p>Do not have an account yet? <a href=\"/register\" class=\"btn btn-link\">Register here</a></p>\n      </form>\n";
+  });
+if (typeof define === 'function' && define.amd) {
+  define([], function() {
+    return __templateData;
+  });
+} else if (typeof module === 'object' && module && module.exports) {
+  module.exports = __templateData;
+} else {
+  __templateData;
+}
+});
+
+;require.register("views/templates/password-edit", function(exports, require, module) {
+var __templateData = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
+  var buffer = "", stack1, options, functionType="function", escapeExpression=this.escapeExpression, self=this, blockHelperMissing=helpers.blockHelperMissing;
+
+function program1(depth0,data) {
+  
+  
+  return "\n  <a class=\"btn btn-danger delete\"><i class=\"fa fa-trash-o\"></i> Delete</a>\n  ";
+  }
+
+  buffer += "\n<form class=\"form-inline\" role=\"form\">\n  <div class=\"form-group\">\n    <label class=\"sr-only\" for=\"exampleInputEmail2\">Url</label>\n    <input type=\"text\" class=\"form-control site\" id=\"exampleInputEmail2\" placeholder=\"Url\" value=\"";
+  if (stack1 = helpers.site) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.site; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
+    + "\">\n  </div>\n  <div class=\"form-group\">\n    <label class=\"sr-only\" for=\"exampleInputEmail2\">Username</label>\n    <input type=\"text\" class=\"form-control username\" id=\"exampleInputEmail2\" placeholder=\"Enter username\" value=\"";
+  if (stack1 = helpers.username) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.username; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
+    + "\">\n  </div>\n  <div class=\"form-group\">\n    <label class=\"sr-only\" for=\"exampleInputPassword2\">Password</label>\n    <input type=\"password\" class=\"form-control password\" id=\"exampleInputPassword2\" placeholder=\"Password\" value=\"";
+  if (stack1 = helpers.password) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.password; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
+    + "\">\n  </div> \n  <div class=\" pull-right\">\n  <button type=\"submit\" class=\"btn btn-primary save\"> <i class=\"fa fa-save\"></i> Store</button>\n  ";
+  options = {hash:{},inverse:self.program(1, program1, data),fn:self.noop,data:data};
+  if (stack1 = helpers['new']) { stack1 = stack1.call(depth0, options); }
+  else { stack1 = depth0['new']; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  if (!helpers['new']) { stack1 = blockHelperMissing.call(depth0, stack1, options); }
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n  <a class=\"btn btn-default cancel\"><i class=\"fa fa-undo\"></i> Cancel</a>\n</div>\n</form>";
+  return buffer;
+  });
+if (typeof define === 'function' && define.amd) {
+  define([], function() {
+    return __templateData;
+  });
+} else if (typeof module === 'object' && module && module.exports) {
+  module.exports = __templateData;
+} else {
+  __templateData;
+}
+});
+
+;require.register("views/templates/password", function(exports, require, module) {
+var __templateData = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
+  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
+
+
+  buffer += "<a class=\"btn btn-default pull-right edit\"><i class=\"fa fa-pencil\"></i> Edit </a>\n<h2><img src=\"http://g.etfv.co/";
+  if (stack1 = helpers.site) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.site; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
+    + "\" /> ";
+  if (stack1 = helpers.domain) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.domain; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
+    + "</h2>";
+  return buffer;
+  });
+if (typeof define === 'function' && define.amd) {
+  define([], function() {
+    return __templateData;
+  });
+} else if (typeof module === 'object' && module && module.exports) {
+  module.exports = __templateData;
+} else {
+  __templateData;
+}
+});
+
+;require.register("views/templates/passwords", function(exports, require, module) {
+var __templateData = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
+  
+
+
+  return "<a class=\"btn btn-default pull-right add\"><i class=\"fa fa-plus\"></i> Add new password </a><h2>Passwords</h2>\n<div class=\"collection\"></div>";
+  });
+if (typeof define === 'function' && define.amd) {
+  define([], function() {
+    return __templateData;
+  });
+} else if (typeof module === 'object' && module && module.exports) {
+  module.exports = __templateData;
+} else {
+  __templateData;
+}
+});
+
+;require.register("views/templates/register", function(exports, require, module) {
+var __templateData = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
+  
+
+
+  return " <form class=\"form-signin\">\n 	<div class=\"logocontainer\">\n 	<i class=\"fa logo fa-user\"></i>\n </div>\n        <h2 class=\"form-signin-heading\">Register</h2>\n        <input type=\"text\" class=\"form-control email\" placeholder=\"Email address\" autofocus>\n        <input type=\"password\" class=\"form-control middle password\" placeholder=\"Password\"> \n        <input type=\"password\" class=\"form-control middle repassword\" placeholder=\"Repeat Password\"> \n        <input type=\"text\" class=\"form-control phone\" placeholder=\"Phone nr\" >\n        <button class=\"btn btn-lg btn-primary btn-block register\" type=\"submit\">Register</button>\n        <p>You alread have an account? <a href=\"/\" class=\"btn btn-link\">Login here</a></p>\n      </form>\n";
+  });
+if (typeof define === 'function' && define.amd) {
+  define([], function() {
+    return __templateData;
+  });
+} else if (typeof module === 'object' && module && module.exports) {
+  module.exports = __templateData;
+} else {
+  __templateData;
+}
+});
+
+;require.register("views/templates/site", function(exports, require, module) {
+var __templateData = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
+  
+
+
+  return " <div class=\"container\">\n<div class=\"header-container\" id=\"header-container\"></div>\n\n<div class=\"outer-page-container\">\n  <div class=\"page-container\" id=\"page-container\">\n  </div>\n</div>\n</div>\n";
+  });
+if (typeof define === 'function' && define.amd) {
+  define([], function() {
+    return __templateData;
+  });
+} else if (typeof module === 'object' && module && module.exports) {
+  module.exports = __templateData;
+} else {
+  __templateData;
+}
+});
+
+;
+//# sourceMappingURL=app.js.map
