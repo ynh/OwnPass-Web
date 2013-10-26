@@ -8,11 +8,16 @@ register = (name, fn) ->
 # -----------
 
 # Make 'with' behave a little more mustachey.
-register 'with', (context, options) ->
+register 'with', (context, fn) ->
   if not context or Handlebars.Utils.isEmpty context
     options.inverse(this)
   else
     options.fn(context)
+
+register 'withUser', (context, fn) ->
+  context.fn(window.user||{email:""})
+register 'withWindow', (context, fn) ->
+  context.fn(window)
 
 # Inverse for 'with'.
 register 'without', (context, options) ->

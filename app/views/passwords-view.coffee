@@ -5,7 +5,7 @@ PasswordModel = require 'models/password'
 module.exports = class PasswordsView extends CollectionView
   container: 'body'
   listSelector:'.collection'
-  autoRender: true
+  autoRender: false
   itemView: Password 
   template: require './templates/passwords'
   events:
