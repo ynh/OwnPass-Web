@@ -24,7 +24,7 @@ module.exports = class PasswordEditView extends View
     self = @
     btn = $(e.target).closest('button')
     btn.button "loading"
-    data = {site:@$el.find('.site').val(),username:Utils.encrypt(@$el.find('.username').val()),password:Utils.encrypt(@$el.find('.password').val())}
+    data = {site:@$el.find('.site').val(),phone:@$el.find('.phone').val(),username:Utils.encrypt(@$el.find('.username').val()),password:Utils.encrypt(@$el.find('.password').val())}
     @model.unset('new')
     @model.save(data)
       .done (response) =>

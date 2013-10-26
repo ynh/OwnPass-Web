@@ -856,6 +856,7 @@ module.exports = PasswordEditView = (function(_super) {
     btn.button("loading");
     data = {
       site: this.$el.find('.site').val(),
+      phone: this.$el.find('.phone').val(),
       username: Utils.encrypt(this.$el.find('.username').val()),
       password: Utils.encrypt(this.$el.find('.password').val())
     };
@@ -1242,7 +1243,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   
 
 
-  return " <form class=\"form-signin\">\n 	<div class=\"logocontainer\">\n 	<i class=\"fa logo fa-user\"></i>\n </div>\n        <h2 class=\"form-signin-heading\">Register</h2>\n        <input type=\"text\" class=\"form-control email\" placeholder=\"Email address\" autofocus>\n        <input type=\"password\" class=\"form-control middle password\" placeholder=\"Password\"> \n        <input type=\"password\" class=\"form-control repassword\" placeholder=\"Repeat Password\"> \n        <button class=\"btn btn-lg btn-primary btn-block register\" type=\"submit\">Register</button>\n        <p>You alread have an account? <a href=\"/\" class=\"btn btn-link\">Login here</a></p>\n      </form>\n";
+  return " <form class=\"form-signin\">\n 	<div class=\"logocontainer\">\n 	<i class=\"fa logo fa-user\"></i>\n </div>\n        <h2 class=\"form-signin-heading\">Register</h2>\n        <input type=\"text\" class=\"form-control email\" placeholder=\"Email address\" autofocus>\n        <input type=\"password\" class=\"form-control middle password\" placeholder=\"Password\"> \n        <input type=\"password\" class=\"form-control middle repassword\" placeholder=\"Repeat Password\"> \n        <input type=\"text\" class=\"form-control phone\" placeholder=\"Phone nr\" >\n        <button class=\"btn btn-lg btn-primary btn-block register\" type=\"submit\">Register</button>\n        <p>You alread have an account? <a href=\"/\" class=\"btn btn-link\">Login here</a></p>\n      </form>\n";
   });
 if (typeof define === 'function' && define.amd) {
   define([], function() {
